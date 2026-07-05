@@ -1,0 +1,3 @@
+[submodule "city-quest-server"]
+	path = city-quest-server
+	url = https://github.com/excing/city-quest-server.git
