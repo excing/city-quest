@@ -15,6 +15,7 @@
     home: "home.html",
     explore: "explore.html",
     encyclopedia: "encyclopedia.html",
+    scan: "scan.html",
     "scan-result": "scan-result.html",
     "box-open": "box-open.html",
     inventory: "inventory.html",
@@ -36,6 +37,7 @@
     home: "首页地图",
     explore: "探索",
     encyclopedia: "百科详情",
+    scan: "扫码",
     "scan-result": "扫码结果",
     "box-open": "开箱结果",
     inventory: "背包",
@@ -116,7 +118,7 @@
         ? ["welcome", "home", "explore", "encyclopedia", "profile"]
         : state === "expired"
           ? ["home", "explore", "encyclopedia", "inventory", "cards", "quest", "profile"]
-          : ["welcome", "home", "explore", "encyclopedia", "scan-result", "box-open", "inventory", "cards", "quest", "profile"];
+          : ["welcome", "home", "explore", "encyclopedia", "scan", "scan-result", "box-open", "inventory", "cards", "quest", "profile"];
     const adminPages = state === "admin"
       ? ["admin-workbench", "admin-deploy-chest", "admin-open-membership", "admin-sell-map", "admin-bundle", "admin-grant-prop", "admin-welcome-code"]
       : [];
@@ -383,7 +385,8 @@
           ["admin-welcome-code", "入口码交付", "小程序码、有效期、交付动作"],
           ["welcome", "欢迎入口", "会员/解密地图/组合三类欢迎页"],
           ["home", "首页地图", "百科图层、宝箱热区、扫码入口"],
-          ["scan-result", "扫码结果", "成功、异常、会员阻断"],
+          ["scan", "扫码", "小程序内扫码界面"],
+          ["scan-result", "扫码结果", "微信外部码或扫码后结果"],
           ["box-open", "开箱结果", "刻痕扫描、奖励入账"],
           ["inventory", "背包", "宝箱、道具、线索、空箱"]
         ];
@@ -665,7 +668,7 @@
             <p>${layer === "chests" ? DATA.chests[0].area + " / " + DATA.chests[0].displayDistance : DATA.encyclopedias[0].title + " / " + DATA.encyclopedias[0].distance}</p>
           </div>
         `}
-        ${canSeeChests ? `<button class="scan-button" data-action="go" data-target="scan-result">扫码</button>` : ""}
+        ${canSeeChests ? `<button class="scan-button" data-action="go" data-target="scan">扫码</button>` : ""}
       </section>
     `;
     layout(content, { active: "home", bodyClass: "home-screen" });
@@ -704,7 +707,7 @@
           <p>${esc(item.displayDistance)} / ${esc(item.drift)}</p>
           <div class="button-row">
             <button class="secondary-button" data-action="${item.unlocked ? "modal-guide" : "modal-compass"}">${item.unlocked ? "查看指引" : "使用罗盘"}</button>
-            <a class="primary-button" href="${link("scan-result")}">扫码验证</a>
+            <a class="primary-button" href="${link("scan")}">扫码验证</a>
           </div>
         </article>
       `).join("") : `<div class="empty-state">当前没有可探索宝箱。</div>`;
@@ -752,6 +755,31 @@
       </section>
     `;
     layout(content, { active: "explore" });
+  }
+
+  function renderScan() {
+    if (!memberCanAct()) {
+      publicOnlyFallback();
+      return;
+    }
+    const content = `
+      ${topbar("扫码", "对准小程序码", badge("相机", "brass"))}
+      <section class="scan-stage scanner-stage">
+        <div class="scanner-frame">
+          <span></span><span></span><span></span><span></span>
+        </div>
+      </section>
+      <section class="panel stack" style="margin-top: 12px">
+        <div class="button-row">
+          <a class="primary-button" href="${link("scan-result", { scenario: "success" })}">实体宝箱码</a>
+          <a class="secondary-button" href="${link("welcome", { type: "membership", code: "valid" })}">会员欢迎码</a>
+          <a class="secondary-button" href="${link("welcome", { type: "map", code: "valid" })}">解密地图码</a>
+          <a class="secondary-button" href="${link("welcome", { type: "bundle", code: "valid" })}">组合欢迎码</a>
+          <a class="secondary-button" href="${link("scan-result", { scenario: "invalid" })}">无效码</a>
+        </div>
+      </section>
+    `;
+    layout(content, { tabbar: false });
   }
 
   function renderScanResult() {
@@ -1168,6 +1196,7 @@
       home: renderHome,
       explore: renderExplore,
       encyclopedia: renderEncyclopedia,
+      scan: renderScan,
       "scan-result": renderScanResult,
       "box-open": renderBoxOpen,
       inventory: renderInventory,

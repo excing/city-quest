@@ -771,6 +771,52 @@ a {
   animation: scanline 2.4s linear infinite;
 }
 
+.scanner-stage {
+  background:
+    radial-gradient(circle at 50% 50%, rgba(23, 32, 27, 0.08), transparent 42%),
+    repeating-linear-gradient(105deg, transparent 0 18px, rgba(23, 32, 27, 0.08) 19px, transparent 20px),
+    #dfe6df;
+}
+
+.scanner-frame {
+  position: relative;
+  width: 210px;
+  height: 210px;
+  border: 1px solid rgba(23, 32, 27, 0.28);
+}
+
+.scanner-frame span {
+  position: absolute;
+  width: 34px;
+  height: 34px;
+  border-color: var(--brass);
+  border-style: solid;
+}
+
+.scanner-frame span:nth-child(1) {
+  left: -1px;
+  top: -1px;
+  border-width: 3px 0 0 3px;
+}
+
+.scanner-frame span:nth-child(2) {
+  right: -1px;
+  top: -1px;
+  border-width: 3px 3px 0 0;
+}
+
+.scanner-frame span:nth-child(3) {
+  right: -1px;
+  bottom: -1px;
+  border-width: 0 3px 3px 0;
+}
+
+.scanner-frame span:nth-child(4) {
+  left: -1px;
+  bottom: -1px;
+  border-width: 0 0 3px 3px;
+}
+
 @keyframes scanline {
   0% { top: 12%; }
   100% { top: 88%; }
