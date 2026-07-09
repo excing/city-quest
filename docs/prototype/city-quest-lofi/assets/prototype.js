@@ -128,7 +128,10 @@
     }).join("");
     const pageLinks = (items) => items.map((key) => {
       const active = key === page ? "is-active" : "";
-      return `<a class="${active}" href="${link(key)}"><span>${PAGE_LABELS[key]}</span><span>></span></a>`;
+      const href = key === "welcome"
+        ? link(key, { type: "membership", code: "valid" })
+        : link(key);
+      return `<a class="${active}" href="${href}"><span>${PAGE_LABELS[key]}</span><span>></span></a>`;
     }).join("");
     const scanLinks = [
       ["welcome", "会员欢迎码", { type: "membership", code: "valid" }],
@@ -141,7 +144,7 @@
       ["scan-result", "实体宝箱码-超出范围", { scenario: "range" }],
       ["scan-result", "实体宝箱码-已领取", { scenario: "claimed" }],
       ["scan-result", "实体宝箱码-已领完", { scenario: "empty" }],
-      ["scan-result", "实体宝箱码-无效 token", { scenario: "invalid" }]
+      ["scan-result", "实体宝箱码-无效", { scenario: "invalid" }]
     ].map(([target, title, extra]) => `
       <a href="${link(target, extra)}"><span>${title}</span><span>扫码</span></a>
     `).join("");
@@ -357,30 +360,75 @@
     const user = currentUser();
     const state = getState();
     const publicOnly = isPublicOnlyState();
-    const restricted = hidesMemberFeaturePages();
-    const directoryItems = isGuest()
-      ? [
+    let directoryItems;
+    let introTitle;
+    let introCopy;
+    let actionRow;
+    let indexSubtitle;
+
+    if (isGuest()) {
+      indexSubtitle = "公开百科浏览";
+      introTitle = "当前状态";
+      introCopy = "当前只展示可访问页面。";
+      actionRow = `<a class="primary-button" href="${link("explore", { tab: "encyclopedias" })}">查看公开百科</a>`;
+      directoryItems = [
           ["home", "首页地图", "公开百科地图"],
           ["explore", "探索", "公开百科列表"],
           ["encyclopedia", "百科详情", "阅读和分享公开内容"],
           ["profile", "我的", "登录入口、设置"]
-        ]
-      : publicOnly
-      ? [
+        ];
+    } else if (publicOnly) {
+      indexSubtitle = "公开百科浏览";
+      introTitle = "当前状态";
+      introCopy = "当前只展示可访问页面。";
+      actionRow = `<a class="primary-button" href="${link("explore", { tab: "encyclopedias" })}">查看公开百科</a>`;
+      directoryItems = [
           ["home", "首页地图", "公开百科地图"],
           ["explore", "探索", "公开百科列表"],
           ["encyclopedia", "百科详情", "收藏和分享公开内容"],
           ["profile", "我的", "用户码、收藏、设置"]
-        ]
-      : getState() === "pending"
-        ? [
+        ];
+    } else if (getState() === "pending") {
+      indexSubtitle = "待开始探索";
+      introTitle = "当前状态";
+      introCopy = "先进入本人欢迎页，点击开始后才开放会员能力。";
+      actionRow = `
+        <a class="primary-button" href="${link("welcome", { state: "pending", type: "membership", code: "valid" })}">进入欢迎页</a>
+        <a class="secondary-button" href="${link("explore", { tab: "encyclopedias" })}">查看公开百科</a>
+      `;
+      directoryItems = [
             ["welcome", "欢迎入口", "进入本人欢迎页"],
             ["home", "首页地图", "公开百科地图"],
             ["explore", "探索", "公开百科列表"],
             ["encyclopedia", "百科详情", "收藏和分享公开内容"],
             ["profile", "我的", "用户码、欢迎入口、设置"]
-          ]
-      : [
+          ];
+    } else if (getState() === "expired") {
+      indexSubtitle = "历史资产只读";
+      introTitle = "当前状态";
+      introCopy = "可查看历史资产和公开百科，会员动作会被阻断。";
+      actionRow = `
+        <a class="primary-button" href="${link("inventory")}">查看历史背包</a>
+        <a class="secondary-button" href="${link("explore", { tab: "encyclopedias" })}">查看公开百科</a>
+      `;
+      directoryItems = [
+          ["home", "首页地图", "公开百科地图"],
+          ["explore", "探索", "公开百科与历史进度"],
+          ["encyclopedia", "百科详情", "收藏和分享公开内容"],
+          ["inventory", "背包", "历史宝箱、道具、线索"],
+          ["cards", "图鉴", "历史图鉴和剪影"],
+          ["quest", "副本详情", "历史线索进度"],
+          ["profile", "我的", "用户码、过期状态、设置"]
+        ];
+    } else if (getState() === "admin") {
+      indexSubtitle = "用户会员首探闭环 + 小程序管理员交付链路";
+      introTitle = "主流程";
+      introCopy = "管理工作台开通会员，交付入口码；用户扫码进入欢迎页，开始探索，进入首页地图，扫码领取宝箱并开箱入账。";
+      actionRow = `
+        <a class="primary-button" href="${link("admin-workbench", { state: "admin" })}">从管理端开始</a>
+        <a class="secondary-button" href="${link("welcome", { state: "pending", type: "membership", code: "valid" })}">从用户欢迎页开始</a>
+      `;
+      directoryItems = [
           ["admin-workbench", "管理工作台", "现场高频任务和最近操作"],
           ["admin-open-membership", "开通/续期会员", "用户码、套餐、实收、确认页"],
           ["admin-welcome-code", "入口码交付", "小程序码、有效期、交付动作"],
@@ -391,22 +439,41 @@
           ["box-open", "开箱结果", "刻痕扫描、奖励入账"],
           ["inventory", "背包", "宝箱、道具、线索、空箱"]
         ];
+    } else {
+      indexSubtitle = "会员探索闭环";
+      introTitle = "主流程";
+      introCopy = "从首页地图查看热区，扫码领取宝箱，开箱后在背包、图鉴和副本中查看进度。";
+      actionRow = `
+        <a class="primary-button" href="${link("home")}">从首页开始</a>
+        <a class="secondary-button" href="${link("scan")}">扫码领取</a>
+      `;
+      directoryItems = [
+          ["welcome", "欢迎入口", "查看本人欢迎页"],
+          ["home", "首页地图", "百科图层、宝箱热区、扫码入口"],
+          ["explore", "探索", "宝箱、百科、副本和线索"],
+          ["encyclopedia", "百科详情", "阅读、收藏和分享"],
+          ["scan", "扫码", "小程序内扫码界面"],
+          ["scan-result", "扫码结果", "微信外部码或扫码后结果"],
+          ["box-open", "开箱结果", "刻痕扫描、奖励入账"],
+          ["inventory", "背包", "宝箱、道具、线索、空箱"],
+          ["cards", "图鉴", "系列进度和图鉴详情"],
+          ["quest", "副本详情", "线索时间线和答案提交"],
+          ["profile", "我的", "用户码、会员状态、设置"]
+        ];
+    }
+
     const content = `
-      ${topbar("原型目录", restricted ? "公开百科浏览" : "用户会员首探闭环 + 小程序管理员交付链路", badge(user.label, state === "member" || state === "admin" ? "moss" : ""))}
+      ${topbar("原型目录", indexSubtitle, badge(user.label, state === "member" || state === "admin" ? "moss" : ""))}
       <section class="panel stack">
-        <h3>${restricted ? "当前状态" : "主流程"}</h3>
-        <p>${restricted ? "当前只展示可访问页面。" : "管理工作台开通会员，交付入口码；用户扫码进入欢迎页，开始探索，进入首页地图，扫码领取宝箱并开箱入账。"}</p>
+        <h3>${introTitle}</h3>
+        <p>${introCopy}</p>
         <div class="button-row">
-          ${restricted
-            ? `${getState() === "pending" ? `<a class="primary-button" href="${link("welcome", { state: "pending", type: "membership", code: "valid" })}">进入欢迎页</a>` : ""}
-              <a class="${getState() === "pending" ? "secondary-button" : "primary-button"}" href="${link("explore", { tab: "encyclopedias" })}">查看公开百科</a>`
-            : `<a class="primary-button" href="${link("admin-workbench", { state: "admin" })}">从管理端开始</a>
-              <a class="secondary-button" href="${link("welcome", { state: "pending", type: "membership", code: "valid" })}">从用户欢迎页开始</a>`}
+          ${actionRow}
         </div>
       </section>
       <section class="stack" style="margin-top: 14px">
         ${directoryItems.map(([key, title, desc]) => `
-          <a class="list-card" href="${link(key)}">
+          <a class="list-card" href="${key === "welcome" ? link(key, { type: "membership", code: "valid" }) : link(key)}">
             <h3>${title}</h3>
             <p>${desc}</p>
           </a>
@@ -590,7 +657,7 @@
     const blockedMapCode = type === "map" && status !== "invalid" && !memberCanAct();
     if (blockedMapCode) {
       const content = `
-        ${topbar("探秘入口", "无法进入", badge("不可用", "signal"))}
+        ${topbar("探秘入口", "无法进入")}
         <section class="panel stack" style="margin-top: 12px">
           <h3>无法进入该探秘入口</h3>
           <p>返回首页继续浏览公开百科。</p>
@@ -772,11 +839,8 @@
       </section>
       <section class="panel stack" style="margin-top: 12px">
         <div class="button-row">
-          <a class="primary-button" href="${link("scan-result", { scenario: "success" })}">实体宝箱码</a>
-          <a class="secondary-button" href="${link("welcome", { type: "membership", code: "valid" })}">会员欢迎码</a>
-          <a class="secondary-button" href="${link("welcome", { type: "map", code: "valid" })}">解密地图码</a>
-          <a class="secondary-button" href="${link("welcome", { type: "bundle", code: "valid" })}">组合欢迎码</a>
-          <a class="secondary-button" href="${link("scan-result", { scenario: "invalid" })}">无效码</a>
+          <button class="primary-button" data-action="random-scan">识别小程序码</button>
+          <button class="secondary-button" data-action="go" data-target="home">返回首页</button>
         </div>
       </section>
     `;
@@ -808,8 +872,8 @@
         <h3>找到一个城市宝箱</h3>
         <p>距离 7m / 领取范围 10m。</p>
         <div class="detail-grid">
-          <div class="detail-stat"><span>当前位置</span><strong>范围内</strong></div>
-          <div class="detail-stat"><span>领取状态</span><strong>可领取</strong></div>
+          <div class="detail-stat"><span>当前位置</span><strong>距离 7m</strong></div>
+          <div class="detail-stat"><span>领取范围</span><strong>10m</strong></div>
         </div>
         <div class="button-row">
           <button class="secondary-button" data-action="claim-box">加入背包</button>
@@ -863,7 +927,7 @@
         <button class="secondary-button" data-action="${current.action}" data-target="${current.target}" data-message="${current.message || current.title}">${current.button}</button>
       </section>`;
     }
-    const content = `${topbar("扫码结果", "线下宝箱", badge(scenario === "success" && memberCanAct() ? "可领取" : "结果", scenario === "success" && memberCanAct() ? "moss" : "signal"))}${body}`;
+    const content = `${topbar("扫码结果", "线下宝箱", badge("宝箱码", "brass"))}${body}`;
     layout(content, { tabbar: false });
   }
 
@@ -886,7 +950,7 @@
       return;
     }
     const content = `
-      ${topbar("开箱结果", "收获已入账", badge("可跳过", "brass"))}
+      ${topbar("开箱结果", "收获已入账")}
       <section class="open-stage">
         <div class="panel" style="width: 76%; text-align: center">
           <h3>收获已入账</h3>
@@ -1102,6 +1166,18 @@
         window.location.search = params.toString();
       } else if (action === "go") {
         window.location.href = link(target.dataset.target || "home");
+      } else if (action === "random-scan") {
+        const roll = Math.random();
+        if (roll < 0.14) {
+          window.location.href = link("welcome", { type: "membership", code: "valid" });
+        } else if (roll < 0.24) {
+          window.location.href = link("welcome", { type: "map", code: "valid" });
+        } else if (roll < 0.34) {
+          window.location.href = link("welcome", { type: "bundle", code: "valid" });
+        } else {
+          const scenarios = ["success", "success", "location", "range", "claimed", "empty", "invalid"];
+          window.location.href = link("scan-result", { scenario: scenarios[Math.floor(Math.random() * scenarios.length)] });
+        }
       } else if (action === "toast") {
         toast(target.dataset.message || "已完成");
       } else if (action === "close-modal") {
