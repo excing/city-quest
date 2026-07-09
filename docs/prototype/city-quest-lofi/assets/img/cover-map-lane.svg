@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 420" role="img" aria-labelledby="title desc">
+  <title id="title">解密地图封面</title>
+  <desc id="desc">弄堂门牌、墙面折痕和线索标签组成的低保真封面。</desc>
+  <rect width="640" height="420" fill="#E1E8E2"/>
+  <rect x="66" y="50" width="508" height="318" rx="8" fill="#F6F3EA" stroke="#17201B" stroke-opacity=".18"/>
+  <path d="M128 82v246M236 82v246M344 82v246M452 82v246" stroke="#17201B" stroke-opacity=".13" stroke-width="4"/>
+  <path d="M94 146h448M94 232h448M94 318h448" stroke="#17201B" stroke-opacity=".13" stroke-width="4"/>
+  <rect x="118" y="104" width="132" height="86" rx="6" fill="#FFFDF7" stroke="#17201B" stroke-opacity=".22"/>
+  <text x="145" y="160" fill="#17201B" font-family="DIN Alternate, monospace" font-size="44" font-weight="700">27</text>
+  <path d="M232 278c64-42 122-54 174-36 42 14 76 12 104-8" fill="none" stroke="#3F6B53" stroke-width="8" stroke-linecap="round"/>
+  <circle cx="412" cy="242" r="30" fill="none" stroke="#B4823D" stroke-width="7" stroke-dasharray="14 10"/>
+  <text x="118" y="360" fill="#17201B" fill-opacity=".7" font-family="PingFang SC, Arial" font-size="24">消失的弄堂门牌</text>
+</svg>

@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 320" role="img" aria-labelledby="title desc">
+  <title id="title">梧桐影</title>
+  <desc id="desc">未获得图鉴的低保真剪影。</desc>
+  <rect width="420" height="320" fill="#F6F3EA"/>
+  <path d="M208 262V78" stroke="#17201B" stroke-opacity=".22" stroke-width="12" stroke-linecap="round"/>
+  <path d="M208 114c-46 20-78 50-96 92M210 134c52 8 88 36 108 82M208 164c-34 8-58 28-72 60" fill="none" stroke="#17201B" stroke-opacity=".2" stroke-width="12" stroke-linecap="round"/>
+  <circle cx="292" cy="76" r="24" fill="#B4823D" fill-opacity=".32"/>
+</svg>

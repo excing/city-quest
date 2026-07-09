@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 420" role="img" aria-labelledby="title desc">
+  <title id="title">城市刻痕会员封面</title>
+  <desc id="desc">纸色地图上叠加街道折线、坐标标签和入口码标记。</desc>
+  <rect width="640" height="420" fill="#F6F3EA"/>
+  <path d="M40 84h152l78 62h118l58 88h142" fill="none" stroke="#17201B" stroke-opacity=".24" stroke-width="8" stroke-linecap="round"/>
+  <path d="M82 322l96-66 86 24 88-128 92 34 106-70" fill="none" stroke="#3F6B53" stroke-opacity=".42" stroke-width="7" stroke-linecap="round"/>
+  <g fill="none" stroke="#17201B" stroke-opacity=".16" stroke-width="2">
+    <path d="M28 36h584M28 108h584M28 180h584M28 252h584M28 324h584M28 396h584"/>
+    <path d="M64 24v372M144 24v372M224 24v372M304 24v372M384 24v372M464 24v372M544 24v372"/>
+  </g>
+  <circle cx="454" cy="236" r="34" fill="none" stroke="#B4823D" stroke-width="8" stroke-dasharray="18 12"/>
+  <rect x="54" y="54" width="170" height="64" rx="8" fill="#FFFDF7" stroke="#17201B" stroke-opacity=".18"/>
+  <text x="74" y="92" fill="#17201B" font-family="PingFang SC, Arial" font-size="26" font-weight="700">CITY QUEST</text>
+  <text x="74" y="354" fill="#17201B" fill-opacity=".66" font-family="DIN Alternate, monospace" font-size="24">31.2104 / 121.4387</text>
+</svg>

@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 320" role="img" aria-labelledby="title desc">
+  <title id="title">城市记忆：转角公寓</title>
+  <desc id="desc">图鉴卡面，表现转角公寓轮廓。</desc>
+  <rect width="420" height="320" fill="#FFFDF7"/>
+  <path d="M78 264V92l132-28 136 44v156z" fill="#D8E5DB" stroke="#17201B" stroke-opacity=".24" stroke-width="4"/>
+  <path d="M210 64v200" stroke="#17201B" stroke-opacity=".26" stroke-width="4"/>
+  <path d="M104 122h76M104 168h76M104 214h76M240 138h76M240 184h76M240 230h76" stroke="#17201B" stroke-opacity=".2" stroke-width="8"/>
+  <circle cx="330" cy="80" r="22" fill="#B4823D" fill-opacity=".4"/>
+</svg>
