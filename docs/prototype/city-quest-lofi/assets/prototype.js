@@ -52,6 +52,9 @@
     ["inventory", "背包"],
     ["profile", "我的"]
   ];
+  const WELCOME_TYPES = ["membership", "map", "bundle"];
+  const WELCOME_STATUS_POOL = ["valid", "valid", "done", "invalid"];
+  const WELCOME_STATUS_VALUES = ["valid", "done", "invalid"];
 
   const root = document.getElementById("prototype-root");
   const page = document.body.dataset.page || "index";
@@ -125,6 +128,21 @@
       const active = key === page ? "is-active" : "";
       return `<a class="${active}" href="${link(key)}"><span>${PAGE_LABELS[key]}</span><span>></span></a>`;
     }).join("");
+    const scanLinks = [
+      ["welcome", "会员欢迎码", { type: "membership", code: "valid" }],
+      ["welcome", "解密地图码", { type: "map", code: "valid" }],
+      ["welcome", "组合欢迎码", { type: "bundle", code: "valid" }],
+      ["welcome", "已完成欢迎码", { type: "membership", code: "done" }],
+      ["welcome", "无效欢迎码", { type: "membership", code: "invalid" }],
+      ["scan-result", "实体宝箱码-有效", { scenario: "success" }],
+      ["scan-result", "实体宝箱码-定位未授权", { scenario: "location" }],
+      ["scan-result", "实体宝箱码-超出范围", { scenario: "range" }],
+      ["scan-result", "实体宝箱码-已领取", { scenario: "claimed" }],
+      ["scan-result", "实体宝箱码-已领完", { scenario: "empty" }],
+      ["scan-result", "实体宝箱码-无效 token", { scenario: "invalid" }]
+    ].map(([target, title, extra]) => `
+      <a href="${link(target, extra)}"><span>${title}</span><span>扫码</span></a>
+    `).join("");
 
     return `
       <aside class="guide-panel" aria-label="原型控制台">
@@ -143,6 +161,11 @@
         <section class="guide-card">
           <h2>用户端页面</h2>
           <div class="page-list">${pageLinks(userPages)}</div>
+        </section>
+        <section class="guide-card">
+          <h2>微信扫码入口</h2>
+          <p>先切换状态，再模拟微信扫一扫进入外部小程序码；不代表用户端 Tab 或页面入口。</p>
+          <div class="page-list">${scanLinks}</div>
         </section>
         ${adminPages.length ? `
           <section class="guide-card">
@@ -209,7 +232,8 @@
     `;
   }
 
-  function modal(title, body, actions) {
+  function modal(title, body, actions, options) {
+    const opts = options || {};
     const modalRoot = document.getElementById("modal-backdrop");
     modalRoot.innerHTML = `
       <article class="modal-card">
@@ -217,7 +241,7 @@
         <div class="modal-body">${body}</div>
         <div class="button-row">
           ${(actions || []).join("")}
-          <button class="secondary-button" data-action="close-modal">关闭</button>
+          ${opts.close === false ? "" : `<button class="secondary-button" data-action="close-modal">关闭</button>`}
         </div>
       </article>
     `;
@@ -269,6 +293,10 @@
     return getState() === "guest";
   }
 
+  function hasWelcomeDeepLink() {
+    return page === "welcome" && WELCOME_STATUS_VALUES.includes(query().get("code") || "");
+  }
+
   function hidesMemberFeaturePages() {
     const state = getState();
     return state === "guest" || state === "normal" || state === "pending";
@@ -315,6 +343,7 @@
   function visiblePageLabel() {
     const publicPages = ["index", "home", "explore", "encyclopedia", "profile"];
     const pendingPages = ["index", "welcome", "home", "explore", "encyclopedia", "profile"];
+    if (isPublicOnlyState() && hasWelcomeDeepLink()) return PAGE_LABELS[page] || "欢迎入口";
     if (isPublicOnlyState() && !publicPages.includes(page)) return "探索";
     if (getState() === "pending" && !pendingPages.includes(page)) return "探索";
     if (page.startsWith("admin-") && !adminCanAct()) return "我的";
@@ -536,7 +565,8 @@
         <p>有效期至 ${esc(code.expiresAt)}。</p>
         <div class="button-row">
           <button class="secondary-button" data-action="toast" data-message="已保存小程序码">保存小程序码</button>
-          <a class="primary-button" href="${link("welcome", { state: type === "membership" ? "pending" : "member", type, code: "valid" })}">打开欢迎页</a>
+          <a class="secondary-button" href="${link("welcome", { state: "guest", type, code: "valid" })}">未登录扫码</a>
+          <a class="primary-button" href="${link("welcome", { state: "normal", type, code: "valid" })}">已登录扫码</a>
         </div>
       </section>
     `;
@@ -544,16 +574,14 @@
   }
 
   function renderWelcome() {
-    if (isPublicOnlyState()) {
+    if (isPublicOnlyState() && !hasWelcomeDeepLink()) {
       publicOnlyFallback();
       return;
     }
-    const typeOptions = ["membership", "map", "bundle"];
-    const statusOptions = ["valid", "valid", "done", "invalid"];
     const requestedType = query().get("type");
     const requestedStatus = query().get("code");
-    const type = typeOptions.includes(requestedType) ? requestedType : typeOptions[Math.floor(Math.random() * typeOptions.length)];
-    const status = statusOptions.includes(requestedStatus) ? requestedStatus : statusOptions[Math.floor(Math.random() * statusOptions.length)];
+    const type = WELCOME_TYPES.includes(requestedType) ? requestedType : WELCOME_TYPES[Math.floor(Math.random() * WELCOME_TYPES.length)];
+    const status = WELCOME_STATUS_VALUES.includes(requestedStatus) ? requestedStatus : WELCOME_STATUS_POOL[Math.floor(Math.random() * WELCOME_STATUS_POOL.length)];
     const code = DATA.welcomeCodes[type] || DATA.welcomeCodes.membership;
     const typeLabel = type === "membership" ? "会员入口码" : type === "map" ? "解密地图码" : "组合入口码";
     const buttonText = status === "done" ? "继续探索" : code.button;
@@ -573,6 +601,11 @@
       </section>
     `;
     layout(content, { tabbar: false });
+    if (isGuest()) {
+      modal("微信授权登录", "授权后将继续校验这张入口码。", [
+        `<button class="primary-button" data-action="set-state" data-state="normal">授权登录</button>`
+      ], { close: false });
+    }
   }
 
   function renderHome() {
