@@ -346,6 +346,7 @@
     const publicPages = ["index", "home", "explore", "encyclopedia", "profile"];
     const pendingPages = ["index", "welcome", "home", "explore", "encyclopedia", "profile"];
     if (isPublicOnlyState() && hasWelcomeDeepLink()) return PAGE_LABELS[page] || "欢迎入口";
+    if (page === "scan-result" && hidesMemberFeaturePages()) return "首页地图";
     if (isPublicOnlyState() && !publicPages.includes(page)) return "探索";
     if (getState() === "pending" && !pendingPages.includes(page)) return "探索";
     if (page.startsWith("admin-") && !adminCanAct()) return "我的";
@@ -671,7 +672,7 @@
         ${canSeeChests ? `<button class="scan-button" data-action="go" data-target="scan">扫码</button>` : ""}
       </section>
     `;
-    layout(content, { active: "home", bodyClass: "home-screen" });
+    layout(content, { active: "home", bodyClass: "home-screen", screenLabel: "首页地图" });
   }
 
   function renderExplore() {
@@ -783,23 +784,33 @@
   }
 
   function renderScanResult() {
-    if (hidesMemberFeaturePages()) {
-      publicOnlyFallback();
-      return;
-    }
     const scenarioOptions = ["success", "success", "location", "range", "claimed", "empty", "invalid"];
     const requestedScenario = query().get("scenario");
     const scenario = requestedScenario || scenarioOptions[Math.floor(Math.random() * scenarioOptions.length)];
     const state = getState();
+    if (state === "guest" || state === "normal" || state === "pending") {
+      renderHome();
+      return;
+    }
+
     let body = "";
-    if (!memberCanAct()) {
-      body = state === "expired"
-        ? `<section class="panel stack"><h3>会员已过期</h3><p>向现场工作人员展示用户码，可线下续期。</p><p class="utility-code">${currentUser().userCode}</p><button class="secondary-button" data-action="go" data-target="home">返回首页</button></section>`
-        : `<section class="panel stack"><h3>当前不可领取</h3><p>返回首页继续浏览公开百科。</p><button class="secondary-button" data-action="go" data-target="home">返回首页</button></section>`;
+    if (state === "expired") {
+      body = `<section class="panel result-card result-card-fail stack">
+        <div class="result-mark">!</div>
+        <h3>会员已过期</h3>
+        <p>向现场工作人员展示用户码，可线下续期。</p>
+        <p class="utility-code">${currentUser().userCode}</p>
+        <button class="secondary-button" data-action="go" data-target="home">返回首页</button>
+      </section>`;
     } else if (scenario === "success") {
-      body = `<section class="panel stack">
+      body = `<section class="panel result-card result-card-success stack">
+        <div class="result-mark">OK</div>
         <h3>找到一个城市宝箱</h3>
         <p>距离 7m / 领取范围 10m。</p>
+        <div class="detail-grid">
+          <div class="detail-stat"><span>当前位置</span><strong>范围内</strong></div>
+          <div class="detail-stat"><span>领取状态</span><strong>可领取</strong></div>
+        </div>
         <div class="button-row">
           <button class="secondary-button" data-action="claim-box">加入背包</button>
           <a class="primary-button" href="${link("box-open")}">立即打开</a>
@@ -808,46 +819,51 @@
     } else {
       const messages = {
         location: {
-          title: "需要开启定位后才能领取宝箱。",
+          title: "需要开启定位后才能领取",
+          detail: "开启定位后可继续校验领取范围。",
           button: "去开启定位",
           action: "toast",
           target: "",
           message: "已打开定位设置"
         },
         range: {
-          title: "当前位置不在领取范围内。",
+          title: "当前位置不在领取范围内",
+          detail: "回到地图附近后可重新扫码。",
           button: "返回首页",
           action: "go",
           target: "home"
         },
         claimed: {
-          title: "你已领取过这个宝箱。",
+          title: "你已领取过这个宝箱",
+          detail: "可在背包中查看领取记录。",
           button: "查看背包",
           action: "go",
           target: "inventory"
         },
         empty: {
-          title: "这个宝箱已被领取完。",
+          title: "这个宝箱已被领取完",
+          detail: "返回地图继续探索其他地点。",
           button: "继续探索",
           action: "go",
           target: "home"
         },
         invalid: {
-          title: "宝箱不存在或已失效。",
+          title: "宝箱不存在或已失效",
+          detail: "返回地图继续探索。",
           button: "返回首页",
           action: "go",
           target: "home"
         }
       };
-      const current = messages[scenario];
-      body = `<section class="panel stack"><h3>${current.title}</h3><p>返回地图继续探索。</p><button class="secondary-button" data-action="${current.action}" data-target="${current.target}" data-message="${current.message || current.title}">${current.button}</button></section>`;
+      const current = messages[scenario] || messages.invalid;
+      body = `<section class="panel result-card result-card-fail stack">
+        <div class="result-mark">!</div>
+        <h3>${current.title}</h3>
+        <p>${current.detail}</p>
+        <button class="secondary-button" data-action="${current.action}" data-target="${current.target}" data-message="${current.message || current.title}">${current.button}</button>
+      </section>`;
     }
-    const scanSubtitle = memberCanAct() || state === "expired" ? "线下宝箱" : "扫码";
-    const content = `
-      ${topbar("扫码结果", scanSubtitle, badge("扫码", "brass"))}
-      <section class="scan-stage"><h3>正在识别</h3></section>
-      <div style="margin-top: 12px">${body}</div>
-    `;
+    const content = `${topbar("扫码结果", "线下宝箱", badge(scenario === "success" && memberCanAct() ? "可领取" : "结果", scenario === "success" && memberCanAct() ? "moss" : "signal"))}${body}`;
     layout(content, { tabbar: false });
   }
 

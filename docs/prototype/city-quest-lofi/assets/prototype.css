@@ -817,6 +817,37 @@ a {
   border-width: 0 0 3px 3px;
 }
 
+.result-card {
+  min-height: 330px;
+  justify-content: center;
+  text-align: center;
+}
+
+.result-card .button-row {
+  justify-content: center;
+}
+
+.result-mark {
+  display: grid;
+  place-items: center;
+  width: 58px;
+  height: 58px;
+  margin: 0 auto 6px;
+  border-radius: 50%;
+  border: 1px solid var(--line);
+  font: 700 16px/1 var(--font-mono, monospace);
+}
+
+.result-card-success .result-mark {
+  background: var(--moss-soft);
+  color: var(--moss);
+}
+
+.result-card-fail .result-mark {
+  background: var(--signal-soft);
+  color: var(--signal);
+}
+
 @keyframes scanline {
   0% { top: 12%; }
   100% { top: 88%; }
