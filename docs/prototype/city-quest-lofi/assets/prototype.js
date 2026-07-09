@@ -583,6 +583,24 @@
     const type = WELCOME_TYPES.includes(requestedType) ? requestedType : WELCOME_TYPES[Math.floor(Math.random() * WELCOME_TYPES.length)];
     const status = WELCOME_STATUS_VALUES.includes(requestedStatus) ? requestedStatus : WELCOME_STATUS_POOL[Math.floor(Math.random() * WELCOME_STATUS_POOL.length)];
     const code = DATA.welcomeCodes[type] || DATA.welcomeCodes.membership;
+    const blockedMapCode = type === "map" && status !== "invalid" && !memberCanAct();
+    if (blockedMapCode) {
+      const content = `
+        ${topbar("探秘入口", "无法进入", badge("不可用", "signal"))}
+        <section class="panel stack" style="margin-top: 12px">
+          <h3>无法进入该探秘入口</h3>
+          <p>返回首页继续浏览公开百科。</p>
+          <button class="secondary-button" data-action="go" data-target="home">返回首页</button>
+        </section>
+      `;
+      layout(content, { tabbar: false, screenLabel: "欢迎入口" });
+      if (isGuest()) {
+        modal("微信授权登录", "授权后将继续校验这张入口码。", [
+          `<button class="primary-button" data-action="set-state" data-state="normal">授权登录</button>`
+        ], { close: false });
+      }
+      return;
+    }
     const typeLabel = type === "membership" ? "会员入口码" : type === "map" ? "解密地图码" : "组合入口码";
     const buttonText = status === "done" ? "继续探索" : code.button;
     const disabled = status === "invalid";
@@ -1070,6 +1088,10 @@
           toast("无法进入该探秘入口");
         } else if (type === "membership") {
           window.location.href = link("home", { state: "member" });
+        } else if (type === "map" && !memberCanAct()) {
+          modal("无法进入该探秘入口", "返回首页继续浏览公开百科。", [
+            `<button class="primary-button" data-action="go" data-target="home">返回首页</button>`
+          ]);
         } else {
           window.location.href = link("quest", { state: "member" });
         }
