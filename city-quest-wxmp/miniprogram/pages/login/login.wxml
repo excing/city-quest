@@ -1,4 +1,4 @@
-<!-- Callers: mine / login-guard. API: POST /auth/wechat/login. User: 开始阶段B和C. -->
+<!-- Callers: mine / login-guard / favorites. API: POST /auth/wechat/login. -->
 <view class="login-page">
   <view class="login-card">
     <button class="login-avatar-btn" open-type="chooseAvatar" bind:chooseavatar="onChooseAvatar">
@@ -30,9 +30,9 @@
     </label>
 
     <button
-      class="btn btn--primary login-submit"
+      class="btn btn--primary login-submit {{!agreed || submitting ? 'btn--disabled' : ''}}"
       loading="{{submitting}}"
-      disabled="{{submitting}}"
+      disabled="{{submitting || !agreed}}"
       bindtap="onSubmit"
     >
       登录

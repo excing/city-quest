@@ -1,4 +1,4 @@
-<!-- Callers: Tab 首页. Map + 点位签. API: public encyclopedias. User: 阅读 docs 开始开发. -->
+<!-- Callers: Tab 首页. Map + 点位签. API: public encyclopedias. -->
 <view class="map-page">
   <map
     id="cityMap"
@@ -25,6 +25,16 @@
 
   <view class="map-page__loading" wx:if="{{loading}}">
     <text>加载点位…</text>
+  </view>
+
+  <view class="map-page__legend" wx:if="{{showLegend && !loading && !errorMessage}}">
+    <view class="map-page__legend-row">
+      <view class="map-page__legend-item" wx:for="{{types}}" wx:key="key">
+        <text class="map-page__legend-dot" style="color: {{item.color}};">●</text>
+        <text class="map-page__legend-name">{{item.name}}</text>
+      </view>
+    </view>
+    <text class="map-page__legend-close" bindtap="onDismissLegend">收起</text>
   </view>
 
   <view class="map-page__preview" wx:if="{{selected}}">

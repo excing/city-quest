@@ -1,7 +1,6 @@
 /**
- * Callers: pages/map.
+ * Callers: pages/map, pages/detail, favorites, history.
  * Builds map markers and include-points from encyclopedia list + types.
- * User: 阅读 @docs , 然后选择合适的agents或skills, 开始进行开发.
  */
 import type { EncyclopediaMapItem, EncyclopediaType } from '../services/encyclopedia'
 
@@ -13,6 +12,9 @@ export const DALI_CENTER = {
 
 export const DEFAULT_SCALE = 12
 
+const MARKER_ICON_BASE = '/assets/markers'
+const KNOWN_TYPE_KEYS = new Set(['food', 'scenic', 'goods'])
+
 export interface MapMarker {
   id: number
   encyclopediaId: string
@@ -20,9 +22,10 @@ export interface MapMarker {
   latitude: number
   width: number
   height: number
-  iconPath?: string
+  iconPath: string
   title?: string
   color: string
+  zIndex?: number
 }
 
 export function colorForType(
@@ -40,23 +43,36 @@ export function typeNameForKey(
   return types.find((t) => t.key === typeKey)?.name ?? typeKey
 }
 
+export function markerIconPath(typeKey: string, selected = false): string {
+  const key = KNOWN_TYPE_KEYS.has(typeKey) ? typeKey : 'default'
+  const suffix = selected ? '-selected' : ''
+  return `${MARKER_ICON_BASE}/marker-${key}${suffix}.png`
+}
+
 /**
  * WeChat map markers require numeric id. Map encyclopedia uuid → index.
+ * Selected marker uses larger icon + higher zIndex for visual feedback.
  */
 export function buildMarkers(
   items: readonly EncyclopediaMapItem[],
   types: readonly EncyclopediaType[],
+  selectedId: string | null = null,
 ): MapMarker[] {
-  return items.map((item, index) => ({
-    id: index,
-    encyclopediaId: item.id,
-    longitude: item.lng,
-    latitude: item.lat,
-    width: 24,
-    height: 24,
-    title: item.name,
-    color: colorForType(item.typeKey, types),
-  }))
+  return items.map((item, index) => {
+    const selected = selectedId === item.id
+    return {
+      id: index,
+      encyclopediaId: item.id,
+      longitude: item.lng,
+      latitude: item.lat,
+      width: selected ? 32 : 24,
+      height: selected ? 32 : 24,
+      iconPath: markerIconPath(item.typeKey, selected),
+      title: item.name,
+      color: colorForType(item.typeKey, types),
+      zIndex: selected ? 10 : 1,
+    }
+  })
 }
 
 export function buildIncludePoints(

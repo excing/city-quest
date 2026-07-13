@@ -1,4 +1,4 @@
-/* Callers: login page. User: 开始阶段B和C. */
+/* Callers: login page. */
 .login-page {
   min-height: 100vh;
   background: var(--color-paper);
@@ -87,4 +87,9 @@
 .btn--primary {
   background: var(--color-primary);
   color: #ffffff;
+}
+
+.btn--disabled,
+.btn[disabled] {
+  opacity: 0.55;
 }

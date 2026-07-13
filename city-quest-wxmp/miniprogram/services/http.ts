@@ -1,10 +1,9 @@
 /**
  * Callers: encyclopedia/auth/favorite services.
  * API: Worker envelope {success,data,error,meta}; static assets via requestAsset.
- * User: 阅读 @docs , 然后选择合适的agents或skills, 开始进行开发.
  */
 import { apiUrl, assetUrl } from '../config/env'
-import { getToken } from '../storage/token'
+import { getToken, clearToken } from '../storage/token'
 
 export interface ApiErrorBody {
   code: string
@@ -32,7 +31,7 @@ export class HttpError extends Error {
 }
 
 export interface RequestOptions {
-  method?: 'GET' | 'POST' | 'PATCH' | 'DELETE'
+  method?: 'GET' | 'POST' | 'PUT' | 'DELETE'
   data?: WechatMiniprogram.IAnyObject | string | ArrayBuffer
   auth?: boolean
   header?: Record<string, string>
@@ -40,6 +39,15 @@ export interface RequestOptions {
 
 export interface AssetRequestOptions {
   header?: Record<string, string>
+}
+
+function clearExpiredSession(): void {
+  try {
+    clearToken()
+    wx.removeStorageSync('city_quest_user')
+  } catch {
+    // ignore storage errors
+  }
 }
 
 /** Worker API under /api/v1; parses envelope {success,data,error,meta}. */
@@ -67,6 +75,20 @@ export function request<T>(path: string, options: RequestOptions = {}): Promise<
         const status = res.statusCode
         const body = res.data as ApiResponse<T> | undefined
 
+        // Expired / invalid token: drop local session so UI re-reads logged-out state.
+        if (status === 401) {
+          clearExpiredSession()
+          reject(
+            new HttpError(
+              401,
+              (body && typeof body === 'object' && body.error?.code) || 'UNAUTHORIZED',
+              (body && typeof body === 'object' && body.error?.message) ||
+                '登录已过期，请重新登录',
+            ),
+          )
+          return
+        }
+
         if (!body || typeof body !== 'object' || !('success' in body)) {
           reject(new HttpError(status, 'INTERNAL_ERROR', '服务响应异常'))
           return
@@ -84,6 +106,9 @@ export function request<T>(path: string, options: RequestOptions = {}): Promise<
 
         const code = body.error?.code ?? 'INTERNAL_ERROR'
         const message = body.error?.message ?? '请求失败'
+        if (code === 'UNAUTHORIZED' || code === 'TOKEN_EXPIRED') {
+          clearExpiredSession()
+        }
         reject(new HttpError(status, code, message))
       },
       fail: () => {

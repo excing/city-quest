@@ -1,4 +1,5 @@
 {
   "navigationBarTitleText": "百科详情",
-  "usingComponents": {}
+  "usingComponents": {},
+  "enableShareAppMessage": true
 }

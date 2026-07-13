@@ -1,4 +1,4 @@
-<!-- Callers: map/history navigate. API: GET /public/encyclopedias/:id. User: 阅读 docs 开始开发. -->
+<!-- Callers: map/history navigate. API: GET /public/encyclopedias/:id. -->
 <view class="detail-page" wx:if="{{loading}}">
   <view class="detail-page__state">加载中…</view>
 </view>
@@ -7,12 +7,21 @@
   <view class="detail-page__state">
     <text class="detail-page__state-title">该地点已下架，暂时无法查看</text>
     <button class="btn btn--primary" bindtap="onBackHome">返回首页</button>
+    <button
+      wx:if="{{loggedIn}}"
+      class="btn btn--secondary detail-page__unfav"
+      loading="{{favLoading}}"
+      disabled="{{favLoading}}"
+      bindtap="onUnfavoriteUnavailable"
+    >
+      取消收藏
+    </button>
   </view>
 </view>
 
 <view class="detail-page" wx:elif="{{detail}}">
   <swiper
-    wx:if="{{detail.images.length > 0}}"
+    wx:if="{{detail.images && detail.images.length > 0}}"
     class="detail-page__swiper"
     indicator-dots
     circular
@@ -29,7 +38,7 @@
       <text class="detail-page__type-name">{{typeName}}</text>
     </view>
 
-    <view class="detail-page__tags" wx:if="{{detail.tags.length > 0}}">
+    <view class="detail-page__tags" wx:if="{{detail.tags && detail.tags.length > 0}}">
       <text class="tag" wx:for="{{detail.tags}}" wx:key="*this">{{item}}</text>
     </view>
 

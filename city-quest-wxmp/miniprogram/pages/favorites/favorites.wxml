@@ -1,4 +1,4 @@
-<!-- Callers: mine (login only). API: GET/DELETE /me/favorites. User: 开始阶段B和C. -->
+<!-- Callers: mine (login only). API: GET/DELETE /me/favorites. -->
 <view class="favorites-page">
   <view class="favorites-page__state" wx:if="{{loading}}">加载中…</view>
 
@@ -39,10 +39,9 @@
       </view>
       <text
         class="favorites-row__unfav"
-        wx:if="{{item.status !== 'published'}}"
         data-id="{{item.encyclopediaId}}"
         catchtap="onUnfavorite"
-      >取消收藏</text>
+      >{{unfavId === item.encyclopediaId ? '取消中…' : '取消收藏'}}</text>
     </view>
   </view>
 </view>

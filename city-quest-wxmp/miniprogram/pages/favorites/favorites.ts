@@ -1,7 +1,6 @@
 /**
  * Callers: mine → favorites (login only).
- * API: GET /me/favorites; DELETE for unpublished unfavorite.
- * User: 开始阶段B 和 C, 完成产品闭环.
+ * API: GET /me/favorites; DELETE unfavorite (published + unpublished).
  */
 import { ENCYCLOPEDIA_TYPES } from '../../config/encyclopedia-types'
 import {
@@ -22,13 +21,17 @@ Page({
   data: {
     loading: true,
     items: [] as FavoriteRow[],
+    unfavId: '' as string,
   },
+
+  loadSeq: 0,
 
   onShow() {
     if (!isLoggedIn()) {
       wx.showToast({ title: '请先登录', icon: 'none' })
       setTimeout(() => {
-        wx.redirectTo({ url: '/pages/login/login' })
+        // Keep return target so login can land back on favorites.
+        wx.redirectTo({ url: '/pages/login/login?return=favorites' })
       }, 300)
       return
     }
@@ -36,9 +39,13 @@ Page({
   },
 
   async load() {
+    const seq = ++this.loadSeq
     this.setData({ loading: true })
     try {
       const list = await fetchFavorites()
+      if (seq !== this.loadSeq) {
+        return
+      }
       const types = ENCYCLOPEDIA_TYPES
       const items: FavoriteRow[] = list.map((item) => ({
         ...item,
@@ -47,6 +54,9 @@ Page({
       }))
       this.setData({ items, loading: false })
     } catch (error) {
+      if (seq !== this.loadSeq) {
+        return
+      }
       this.setData({ loading: false, items: [] })
       wx.showToast({
         title: error instanceof HttpError ? error.message : '加载失败',
@@ -70,18 +80,24 @@ Page({
 
   async onUnfavorite(e: WechatMiniprogram.TouchEvent) {
     const id = e.currentTarget.dataset.id as string
-    if (!id) {
+    if (!id || this.data.unfavId) {
       return
     }
+    this.setData({ unfavId: id })
     try {
       await removeFavorite(id)
       wx.showToast({ title: '已取消收藏', icon: 'none' })
-      void this.load()
+      const items = (this.data.items as FavoriteRow[]).filter(
+        (row) => row.encyclopediaId !== id,
+      )
+      this.setData({ items })
     } catch (error) {
       wx.showToast({
         title: error instanceof HttpError ? error.message : '操作失败',
         icon: 'none',
       })
+    } finally {
+      this.setData({ unfavId: '' })
     }
   },
 
