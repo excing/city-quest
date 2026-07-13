@@ -8,17 +8,18 @@ import { useRouter } from 'vue-router'
 import {
   ApiError,
   fetchAdminEncyclopedias,
+  fetchAdminTypes,
   updateEncyclopedia,
   type AdminEncyclopedia,
   type EncyclopediaType,
 } from '../api/client'
-import fallbackTypes from '../config/encyclopedia-types.json'
+import { ENCYCLOPEDIA_TYPES } from '../config/encyclopedia-types'
 import { useAuthStore } from '../stores/auth'
 
 const auth = useAuthStore()
 const router = useRouter()
 const items = ref<AdminEncyclopedia[]>([])
-const types = ref<EncyclopediaType[]>(fallbackTypes as EncyclopediaType[])
+const types = ref<EncyclopediaType[]>([...ENCYCLOPEDIA_TYPES])
 const loading = ref(true)
 const error = ref('')
 const statusFilter = ref('')
@@ -38,6 +39,11 @@ async function load() {
   loading.value = true
   error.value = ''
   try {
+    try {
+      types.value = await fetchAdminTypes(auth.token)
+    } catch {
+      types.value = [...ENCYCLOPEDIA_TYPES]
+    }
     const result = await fetchAdminEncyclopedias(auth.token, {
       page: page.value,
       pageSize,

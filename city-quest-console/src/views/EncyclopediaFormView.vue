@@ -17,7 +17,7 @@ import {
 import ImageUploader from '../components/ImageUploader.vue'
 import MapPicker from '../components/MapPicker.vue'
 import TagInput from '../components/TagInput.vue'
-import fallbackTypes from '../config/encyclopedia-types.json'
+import { ENCYCLOPEDIA_TYPES } from '../config/encyclopedia-types'
 import { useAuthStore } from '../stores/auth'
 import { parseLngLatText } from '../utils/coord'
 
@@ -29,7 +29,7 @@ const route = useRoute()
 const isEdit = computed(() => Boolean(props.id || route.params.id))
 const encyclopediaId = computed(() => (props.id || (route.params.id as string) || '').toString())
 
-const types = ref<EncyclopediaType[]>(fallbackTypes as EncyclopediaType[])
+const types = ref<EncyclopediaType[]>([...ENCYCLOPEDIA_TYPES])
 const loading = ref(isEdit.value)
 const saving = ref(false)
 const error = ref('')
@@ -55,7 +55,7 @@ onMounted(async () => {
     try {
       types.value = await fetchAdminTypes(auth.token)
     } catch {
-      types.value = fallbackTypes as EncyclopediaType[]
+      types.value = [...ENCYCLOPEDIA_TYPES]
     }
   }
   if (isEdit.value && auth.token) {

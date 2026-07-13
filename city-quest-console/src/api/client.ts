@@ -101,7 +101,23 @@ export async function adminLogin(username: string, password: string) {
   return parseJson<{ token: string }>(res)
 }
 
-export async function fetchAdminTypes(token: string) {
+/**
+ * Prefer Workers static asset (does not count against Worker invocations).
+ * Falls back to admin API when asset is unavailable.
+ */
+export async function fetchAdminTypes(token: string): Promise<EncyclopediaType[]> {
+  try {
+    const assetRes = await fetch(`${API_BASE}/config/encyclopedia-types.json`)
+    if (assetRes.ok) {
+      const data = (await assetRes.json()) as unknown
+      if (Array.isArray(data) && data.length > 0) {
+        return data as EncyclopediaType[]
+      }
+    }
+  } catch {
+    // fall through to API
+  }
+
   const res = await fetch(`${API_BASE}/api/v1/admin/types`, {
     headers: authHeader(token),
   })
