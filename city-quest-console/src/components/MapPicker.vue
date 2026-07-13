@@ -11,7 +11,10 @@ import 'leaflet/dist/leaflet.css'
 import { nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { formatCoord, gcj02ToWgs84, parseLngLatText, wgs84ToGcj02 } from '../utils/coord'
 
-// Vite rewrites asset URLs; Leaflet's default icon paths would 404 without this.
+// Leaflet Default icon still prefixes imagePath onto iconUrl. In Vite that yields a broken
+// URL, so drop the override and point options at bundled assets.
+// eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-dynamic-delete
+delete (L.Icon.Default.prototype as any)._getIconUrl
 L.Icon.Default.mergeOptions({
   iconRetinaUrl: markerIcon2x,
   iconUrl: markerIcon,

@@ -37,7 +37,7 @@ const imageUrls = ref<string[]>([])
 
 const form = reactive({
   name: '',
-  typeKey: 'food',
+  typeKey: 'scenic',
   lng: '100.19',
   lat: '25.69',
   intro: '',
