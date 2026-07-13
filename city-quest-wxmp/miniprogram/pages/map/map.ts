@@ -1,6 +1,6 @@
 /**
  * Callers: Tab 首页 map via app.json.
- * API: GET /public/types + /public/encyclopedias
+ * API: static /config/encyclopedia-types.json + GET /public/encyclopedias
  * User: 阅读 @docs , 然后选择合适的agents或skills, 开始进行开发.
  */
 import { ENCYCLOPEDIA_TYPES } from '../../config/encyclopedia-types'

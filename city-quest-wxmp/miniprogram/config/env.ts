@@ -9,7 +9,14 @@ export const API_BASE_URL = 'http://192.168.0.107:8787'
 
 export const API_PREFIX = '/api/v1'
 
+/** Worker API under /api/v1 */
 export function apiUrl(path: string): string {
   const normalized = path.startsWith('/') ? path : `/${path}`
   return `${API_BASE_URL}${API_PREFIX}${normalized}`
+}
+
+/** Workers static assets (not Worker invocations), e.g. /config/encyclopedia-types.json */
+export function assetUrl(path: string): string {
+  const normalized = path.startsWith('/') ? path : `/${path}`
+  return `${API_BASE_URL}${normalized}`
 }
