@@ -15,9 +15,11 @@ import {
   type EncyclopediaType,
 } from '../api/client'
 import ImageUploader from '../components/ImageUploader.vue'
+import MapPicker from '../components/MapPicker.vue'
 import TagInput from '../components/TagInput.vue'
 import fallbackTypes from '../config/encyclopedia-types.json'
 import { useAuthStore } from '../stores/auth'
+import { parseLngLatText } from '../utils/coord'
 
 const props = defineProps<{ id?: string }>()
 const auth = useAuthStore()
@@ -85,18 +87,17 @@ onMounted(async () => {
 async function onSave() {
   if (!auth.token) return
   error.value = ''
-  const lng = Number(form.lng)
-  const lat = Number(form.lat)
-  if (!form.name.trim() || !form.intro.trim() || Number.isNaN(lng) || Number.isNaN(lat)) {
-    error.value = '请填写名称、介绍与有效经纬度'
+  const coords = parseLngLatText(form.lng, form.lat)
+  if (!form.name.trim() || !form.intro.trim() || !coords) {
+    error.value = '请填写名称、介绍与有效经纬度（GCJ-02）'
     return
   }
   saving.value = true
   const payload = {
     name: form.name.trim(),
     typeKey: form.typeKey,
-    lng,
-    lat,
+    lng: coords.lng,
+    lat: coords.lat,
     intro: form.intro.trim(),
     address: form.address.trim() || null,
     businessHours: form.businessHours.trim() || null,
@@ -158,17 +159,34 @@ async function onDelete() {
         </select>
       </div>
 
-      <div class="grid grid-cols-2 gap-4">
-        <div>
-          <label class="text-sm font-medium">经度 *</label>
-          <input v-model="form.lng" required class="mt-1 w-full rounded-md border border-line px-3 py-2 text-sm" />
+      <div>
+        <label class="text-sm font-medium">位置 *</label>
+        <div class="mt-1 grid grid-cols-2 gap-4">
+          <div>
+            <label for="poi-lng" class="text-xs text-ink-secondary">经度（GCJ-02）</label>
+            <input
+              id="poi-lng"
+              v-model="form.lng"
+              required
+              inputmode="decimal"
+              class="mt-1 w-full rounded-md border border-line px-3 py-2 text-sm"
+            />
+          </div>
+          <div>
+            <label for="poi-lat" class="text-xs text-ink-secondary">纬度（GCJ-02）</label>
+            <input
+              id="poi-lat"
+              v-model="form.lat"
+              required
+              inputmode="decimal"
+              class="mt-1 w-full rounded-md border border-line px-3 py-2 text-sm"
+            />
+          </div>
         </div>
-        <div>
-          <label class="text-sm font-medium">纬度 *</label>
-          <input v-model="form.lat" required class="mt-1 w-full rounded-md border border-line px-3 py-2 text-sm" />
+        <div class="mt-3">
+          <MapPicker v-model:lng="form.lng" v-model:lat="form.lat" />
         </div>
       </div>
-      <p class="text-xs text-ink-muted">坐标系 GCJ-02，与微信地图一致</p>
 
       <div>
         <label class="text-sm font-medium">介绍 *</label>

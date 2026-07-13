@@ -1,0 +1,1 @@
+{"root":["./src/main.ts","./src/vite-env.d.ts","./src/api/client.ts","./src/router/index.ts","./src/stores/auth.ts","./src/utils/coord.ts","./src/app.vue","./src/components/imageuploader.vue","./src/components/mappicker.vue","./src/components/taginput.vue","./src/views/encyclopediaformview.vue","./src/views/encyclopedialistview.vue","./src/views/loginview.vue"],"version":"5.9.3"}
