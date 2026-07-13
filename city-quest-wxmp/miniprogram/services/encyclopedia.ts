@@ -3,8 +3,7 @@
  * API: static /config/encyclopedia-types.json; GET /public/encyclopedias, /public/encyclopedias/:id
  * User: 阅读 @docs , 然后选择合适的agents或skills, 开始进行开发.
  */
-import { assetUrl } from '../config/env'
-import { HttpError, request } from './http'
+import { HttpError, request, requestAsset } from './http'
 
 export interface EncyclopediaType {
   key: string
@@ -42,35 +41,12 @@ export interface EncyclopediaDetail {
 }
 
 /** Load types from Workers static asset (does not count against Worker invocations). */
-export function fetchTypes(): Promise<EncyclopediaType[]> {
-  return new Promise((resolve, reject) => {
-    wx.request({
-      url: assetUrl('/config/encyclopedia-types.json'),
-      method: 'GET',
-      success: (res) => {
-        const data = res.data
-        if (
-          res.statusCode >= 200 &&
-          res.statusCode < 300 &&
-          Array.isArray(data) &&
-          data.length > 0
-        ) {
-          resolve(data as EncyclopediaType[])
-          return
-        }
-        reject(
-          new HttpError(
-            res.statusCode || 0,
-            'INTERNAL_ERROR',
-            '类型配置加载失败',
-          ),
-        )
-      },
-      fail: () => {
-        reject(new HttpError(0, 'NETWORK_ERROR', '网络异常，请检查网络后重试'))
-      },
-    })
-  })
+export async function fetchTypes(): Promise<EncyclopediaType[]> {
+  const data = await requestAsset<EncyclopediaType[]>('/config/encyclopedia-types.json')
+  if (!Array.isArray(data) || data.length === 0) {
+    throw new HttpError(0, 'INTERNAL_ERROR', '类型配置加载失败')
+  }
+  return data
 }
 
 export function fetchPublishedList(): Promise<EncyclopediaMapItem[]> {
