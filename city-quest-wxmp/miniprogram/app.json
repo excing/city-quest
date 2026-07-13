@@ -1,14 +1,45 @@
 {
   "pages": [
-    "pages/index/index",
-    "pages/logs/logs"
+    "pages/map/map",
+    "pages/mine/mine",
+    "pages/detail/detail",
+    "pages/history/history",
+    "pages/favorites/favorites",
+    "pages/login/login",
+    "pages/about/about",
+    "pages/agreement/agreement",
+    "pages/privacy/privacy"
   ],
   "window": {
     "navigationBarTextStyle": "black",
-    "navigationBarTitleText": "Weixin",
-    "navigationBarBackgroundColor": "#ffffff"
+    "navigationBarTitleText": "我的城市探秘",
+    "navigationBarBackgroundColor": "#F5F7F6",
+    "backgroundColor": "#F5F7F6",
+    "backgroundTextStyle": "dark"
+  },
+  "tabBar": {
+    "color": "#8B939E",
+    "selectedColor": "#2B4C7E",
+    "backgroundColor": "#FFFFFF",
+    "borderStyle": "black",
+    "list": [
+      {
+        "pagePath": "pages/map/map",
+        "text": "首页"
+      },
+      {
+        "pagePath": "pages/mine/mine",
+        "text": "我的"
+      }
+    ]
   },
   "style": "v2",
   "componentFramework": "glass-easel",
-  "lazyCodeLoading": "requiredComponents"
+  "lazyCodeLoading": "requiredComponents",
+  "permission": {
+    "scope.userLocation": {
+      "desc": "用于在地图上展示大理点位与导航"
+    }
+  },
+  "requiredPrivateInfos": []
 }

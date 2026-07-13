@@ -1,0 +1,38 @@
+<!-- Callers: mine navigate. Data: local browse history. User: 阅读 docs 开始开发. -->
+<view class="history-page">
+  <view class="history-page__toolbar" wx:if="{{items.length > 0}}">
+    <text class="history-page__clear" bindtap="onClear">清空</text>
+  </view>
+
+  <view class="history-page__empty" wx:if="{{items.length === 0}}">
+    <text class="history-page__empty-title">还没有浏览记录</text>
+    <text class="history-page__empty-desc">打开地点详情后，会自动记在这里</text>
+    <button class="btn btn--primary" bindtap="onGoMap">去地图看看</button>
+  </view>
+
+  <view class="history-list" wx:else>
+    <view
+      class="history-row"
+      wx:for="{{items}}"
+      wx:key="id"
+      data-id="{{item.id}}"
+      bindtap="onOpenDetail"
+    >
+      <image
+        wx:if="{{item.coverUrl}}"
+        class="history-row__cover"
+        src="{{item.coverUrl}}"
+        mode="aspectFill"
+      />
+      <view class="history-row__body">
+        <text class="history-row__name">{{item.name}}</text>
+        <view class="history-row__meta">
+          <text class="history-row__dot" style="color: {{item.typeColor}};">●</text>
+          <text>{{item.typeName}}</text>
+          <text class="history-row__time">{{item.viewedAtText}}</text>
+        </view>
+      </view>
+      <text class="history-row__chevron">›</text>
+    </view>
+  </view>
+</view>

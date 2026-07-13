@@ -1,0 +1,136 @@
+/* Callers: favorites page. User: 开始阶段B和C. */
+.favorites-page {
+  min-height: 100vh;
+  background: var(--color-paper);
+  padding: 24rpx 32rpx 48rpx;
+}
+
+.favorites-page__state {
+  padding: 120rpx 0;
+  text-align: center;
+  color: var(--color-ink-secondary);
+}
+
+.favorites-page__empty {
+  margin-top: 120rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16rpx;
+}
+
+.favorites-page__empty-title {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: var(--color-ink);
+}
+
+.favorites-page__empty-desc {
+  font-size: 26rpx;
+  color: var(--color-ink-secondary);
+  margin-bottom: 24rpx;
+}
+
+.favorites-list {
+  background: var(--color-surface);
+  border-radius: var(--radius-lg);
+  border: 1rpx solid var(--color-line);
+  overflow: hidden;
+}
+
+.favorites-row {
+  padding: 20rpx 24rpx;
+  border-top: 1rpx solid var(--color-line);
+}
+
+.favorites-row:first-child {
+  border-top: none;
+}
+
+.favorites-row--off {
+  opacity: 0.72;
+}
+
+.favorites-row__main {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 20rpx;
+  min-height: 88rpx;
+}
+
+.favorites-row__cover {
+  width: 88rpx;
+  height: 88rpx;
+  border-radius: var(--radius-sm);
+  background: var(--color-fill);
+  flex-shrink: 0;
+}
+
+.favorites-row__body {
+  flex: 1;
+  min-width: 0;
+}
+
+.favorites-row__title-line {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 12rpx;
+}
+
+.favorites-row__name {
+  flex: 1;
+  min-width: 0;
+  font-size: 30rpx;
+  color: var(--color-ink);
+  font-weight: 500;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.status-badge {
+  flex-shrink: 0;
+  padding: 2rpx 12rpx;
+  border-radius: var(--radius-pill);
+  background: var(--color-fill);
+  color: var(--color-ink-muted);
+  font-size: 20rpx;
+}
+
+.favorites-row__meta {
+  margin-top: 8rpx;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 8rpx;
+  font-size: 24rpx;
+  color: var(--color-ink-secondary);
+}
+
+.favorites-row__dot {
+  font-size: 20rpx;
+}
+
+.favorites-row__unfav {
+  display: block;
+  margin-top: 12rpx;
+  text-align: right;
+  color: var(--color-primary);
+  font-size: 26rpx;
+  padding: 8rpx 0;
+}
+
+.btn {
+  height: 88rpx;
+  line-height: 88rpx;
+  border-radius: var(--radius-md);
+  font-size: 30rpx;
+  padding: 0 40rpx;
+}
+
+.btn--primary {
+  background: var(--color-primary);
+  color: #ffffff;
+}

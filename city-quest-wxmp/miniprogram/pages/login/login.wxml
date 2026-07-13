@@ -1,0 +1,41 @@
+<!-- Callers: mine / login-guard. API: POST /auth/wechat/login. User: 开始阶段B和C. -->
+<view class="login-page">
+  <view class="login-card">
+    <button class="login-avatar-btn" open-type="chooseAvatar" bind:chooseavatar="onChooseAvatar">
+      <image
+        class="login-avatar"
+        src="{{avatarUrl || defaultAvatar}}"
+        mode="aspectFill"
+      />
+      <text class="login-avatar-hint">选择头像</text>
+    </button>
+
+    <input
+      class="login-nickname"
+      type="nickname"
+      placeholder="请输入昵称"
+      value="{{nickname}}"
+      bindinput="onNicknameInput"
+      bindblur="onNicknameBlur"
+    />
+
+    <label class="login-agree" bindtap="onToggleAgree">
+      <checkbox checked="{{agreed}}" color="#2B4C7E" />
+      <text class="login-agree__text">
+        我已阅读并同意
+        <text class="login-link" catchtap="onOpenAgreement">《用户协议》</text>
+        和
+        <text class="login-link" catchtap="onOpenPrivacy">《隐私政策》</text>
+      </text>
+    </label>
+
+    <button
+      class="btn btn--primary login-submit"
+      loading="{{submitting}}"
+      disabled="{{submitting}}"
+      bindtap="onSubmit"
+    >
+      登录
+    </button>
+  </view>
+</view>

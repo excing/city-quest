@@ -1,0 +1,6 @@
+<!-- Callers: mine. Static about. User: 阅读 docs 开始开发. -->
+<view class="about-page">
+  <text class="about-page__title">我的城市探秘</text>
+  <text class="about-page__lead">在地图上发现运营策展的本地地点百科。</text>
+  <text class="about-page__body">v1 范围：云南大理。游客可浏览地图与详情；登录后可收藏（阶段 B）。内容由运营维护，不支持用户发布。</text>
+</view>

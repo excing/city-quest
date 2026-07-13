@@ -1,0 +1,40 @@
+<!-- Callers: Tab 首页. Map + 点位签. API: public encyclopedias. User: 阅读 docs 开始开发. -->
+<view class="map-page">
+  <map
+    id="cityMap"
+    class="map-page__map"
+    longitude="{{longitude}}"
+    latitude="{{latitude}}"
+    scale="{{scale}}"
+    markers="{{markers}}"
+    include-points="{{includePoints}}"
+    show-location="{{false}}"
+    enable-3D="{{false}}"
+    bindmarkertap="onMarkerTap"
+    bindtap="onMapTap"
+  />
+
+  <view class="map-page__banner map-page__banner--error" wx:if="{{errorMessage}}" bindtap="onRetry">
+    <text>{{errorMessage}}</text>
+  </view>
+
+  <view class="map-page__banner map-page__banner--empty" wx:elif="{{!loading && items.length === 0}}">
+    <text>暂时还没有点位</text>
+    <text class="map-page__link" bindtap="onRetry">刷新</text>
+  </view>
+
+  <view class="map-page__loading" wx:if="{{loading}}">
+    <text>加载点位…</text>
+  </view>
+
+  <view class="map-page__preview" wx:if="{{selected}}">
+    <preview-card
+      name="{{selected.name}}"
+      typeName="{{selected.typeName}}"
+      typeColor="{{selected.typeColor}}"
+      intro="{{selected.intro}}"
+      encyclopediaId="{{selected.id}}"
+      bind:open="onOpenDetail"
+    />
+  </view>
+</view>

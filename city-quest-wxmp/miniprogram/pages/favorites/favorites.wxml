@@ -1,0 +1,48 @@
+<!-- Callers: mine (login only). API: GET/DELETE /me/favorites. User: 开始阶段B和C. -->
+<view class="favorites-page">
+  <view class="favorites-page__state" wx:if="{{loading}}">加载中…</view>
+
+  <view class="favorites-page__empty" wx:elif="{{items.length === 0}}">
+    <text class="favorites-page__empty-title">还没有收藏</text>
+    <text class="favorites-page__empty-desc">在地点详情中点击「收藏」即可添加</text>
+    <button class="btn btn--primary" bindtap="onGoMap">去地图看看</button>
+  </view>
+
+  <view class="favorites-list" wx:else>
+    <view
+      class="favorites-row {{item.status !== 'published' ? 'favorites-row--off' : ''}}"
+      wx:for="{{items}}"
+      wx:key="encyclopediaId"
+    >
+      <view
+        class="favorites-row__main"
+        data-id="{{item.encyclopediaId}}"
+        data-status="{{item.status}}"
+        bindtap="onOpenDetail"
+      >
+        <image
+          wx:if="{{item.coverUrl}}"
+          class="favorites-row__cover"
+          src="{{item.coverUrl}}"
+          mode="aspectFill"
+        />
+        <view class="favorites-row__body">
+          <view class="favorites-row__title-line">
+            <text class="favorites-row__name">{{item.name}}</text>
+            <text class="status-badge" wx:if="{{item.status !== 'published'}}">已下架</text>
+          </view>
+          <view class="favorites-row__meta">
+            <text class="favorites-row__dot" style="color: {{item.typeColor}};">●</text>
+            <text>{{item.typeName}}</text>
+          </view>
+        </view>
+      </view>
+      <text
+        class="favorites-row__unfav"
+        wx:if="{{item.status !== 'published'}}"
+        data-id="{{item.encyclopediaId}}"
+        catchtap="onUnfavorite"
+      >取消收藏</text>
+    </view>
+  </view>
+</view>

@@ -1,0 +1,11 @@
+<!-- Callers: login/mine. Static. User: 开始阶段B 和 C, 完成产品闭环. -->
+<view class="legal-page">
+  <text class="legal-page__title">隐私政策</text>
+  <text class="legal-page__p">我们重视你的隐私。本政策说明「我的城市探秘」如何处理相关信息。</text>
+  <text class="legal-page__h">一、我们收集的信息</text>
+  <text class="legal-page__p">1. 微信登录：openid、昵称与头像（你选择填写时）。\n2. 浏览记录：仅本地设备，不同步云端。\n3. 收藏：登录后保存在服务端。\n4. 地图展示与导航相关能力。</text>
+  <text class="legal-page__h">二、使用目的</text>
+  <text class="legal-page__p">账号识别、收藏同步、内容展示与基础服务保障，不出售个人信息。</text>
+  <text class="legal-page__h">三、你的权利</text>
+  <text class="legal-page__p">可退出登录、清空本地浏览记录、取消收藏。</text>
+</view>

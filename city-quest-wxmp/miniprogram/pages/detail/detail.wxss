@@ -1,0 +1,157 @@
+/* Callers: detail page. User: 阅读 docs 开始开发. */
+.detail-page {
+  min-height: 100vh;
+  background: var(--color-paper);
+  padding-bottom: 160rpx;
+}
+
+.detail-page__state {
+  padding: 120rpx 48rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 32rpx;
+  color: var(--color-ink-secondary);
+  font-size: 28rpx;
+}
+
+.detail-page__state-title {
+  color: var(--color-ink);
+  font-size: 30rpx;
+  text-align: center;
+}
+
+.detail-page__swiper {
+  width: 100%;
+  height: 420rpx;
+  background: var(--color-fill);
+}
+
+.detail-page__image {
+  width: 100%;
+  height: 100%;
+}
+
+.detail-page__content {
+  padding: 32rpx;
+  background: var(--color-surface);
+}
+
+.detail-page__name {
+  display: block;
+  font-size: 40rpx;
+  font-weight: 600;
+  color: var(--color-ink);
+  line-height: 1.3;
+}
+
+.detail-page__type-row {
+  margin-top: 12rpx;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 8rpx;
+}
+
+.detail-page__dot {
+  font-size: 22rpx;
+}
+
+.detail-page__type-name {
+  font-size: 26rpx;
+  color: var(--color-ink);
+}
+
+.detail-page__tags {
+  margin-top: 16rpx;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 12rpx;
+}
+
+.tag {
+  padding: 6rpx 16rpx;
+  border-radius: var(--radius-sm);
+  background: var(--color-fill);
+  color: var(--color-ink-secondary);
+  font-size: 22rpx;
+}
+
+.detail-page__intro {
+  display: block;
+  margin-top: 28rpx;
+  font-size: 30rpx;
+  line-height: 1.65;
+  color: var(--color-ink);
+  white-space: pre-wrap;
+}
+
+.detail-page__info {
+  margin-top: 24rpx;
+  padding-top: 24rpx;
+  border-top: 1rpx solid var(--color-line);
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 16rpx;
+  font-size: 28rpx;
+}
+
+.detail-page__info-label {
+  width: 80rpx;
+  flex-shrink: 0;
+  color: var(--color-ink-muted);
+}
+
+.detail-page__info-value {
+  flex: 1;
+  color: var(--color-ink);
+  line-height: 1.5;
+}
+
+.detail-page__info-action {
+  flex-shrink: 0;
+  color: var(--color-primary);
+}
+
+.detail-page__footer {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 16rpx 32rpx;
+  background: var(--color-surface);
+  border-top: 1rpx solid var(--color-line);
+}
+
+.detail-page__fav {
+  width: 100%;
+}
+
+.btn {
+  height: 88rpx;
+  line-height: 88rpx;
+  border-radius: var(--radius-md);
+  font-size: 30rpx;
+  font-weight: 500;
+  padding: 0 32rpx;
+}
+
+.btn--primary {
+  background: var(--color-primary);
+  color: #ffffff;
+}
+
+.btn--secondary {
+  background: var(--color-primary-soft);
+  color: var(--color-primary);
+}
+
+.btn[disabled] {
+  opacity: 0.55;
+}
+
+.safe-bottom {
+  padding-bottom: calc(16rpx + env(safe-area-inset-bottom));
+}

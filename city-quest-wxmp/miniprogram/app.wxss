@@ -1,10 +1,48 @@
-/**app.wxss**/
-.container {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-between;
-  padding: 200rpx 0;
+/** Design tokens — docs/设计/UIUX-我的城市探秘.md §3
+ * Callers: all pages/components via CSS variables. API: none. Schema: none.
+ * User: 阅读 @docs , 然后选择合适的agents或skills, 开始进行开发.
+ */
+page {
+  --color-ink: #1a2332;
+  --color-ink-secondary: #5c6570;
+  --color-ink-muted: #8b939e;
+  --color-paper: #f5f7f6;
+  --color-surface: #ffffff;
+  --color-line: #e2e6ea;
+  --color-line-strong: #c9d0d6;
+  --color-fill: #e8eef2;
+  --color-primary: #2b4c7e;
+  --color-primary-pressed: #1f3a63;
+  --color-primary-soft: #e7eef6;
+  --color-danger: #c23b3b;
+  --color-danger-soft: #fcecec;
+  --color-warning: #b45309;
+  --color-success: #1f7a4c;
+  --color-scrim: rgba(26, 35, 50, 0.45);
+  --color-map-chrome: rgba(255, 255, 255, 0.92);
+
+  --radius-sm: 12rpx;
+  --radius-md: 20rpx;
+  --radius-lg: 28rpx;
+  --radius-xl: 40rpx;
+  --radius-pill: 999rpx;
+
+  --shadow-card: 0 8rpx 32rpx rgba(26, 35, 50, 0.08);
+  --shadow-sheet: 0 -8rpx 48rpx rgba(26, 35, 50, 0.1);
+
+  background: var(--color-paper);
+  color: var(--color-ink);
+  font-size: 28rpx;
   box-sizing: border-box;
-} 
+}
+
+view,
+text,
+button,
+image {
+  box-sizing: border-box;
+}
+
+button::after {
+  border: none;
+}

@@ -1,0 +1,47 @@
+<!-- Callers: Tab 我的. Login/favorites/history/legal. User: 开始阶段B和C. -->
+<view class="mine-page">
+  <view class="mine-card" wx:if="{{!loggedIn}}">
+    <view class="mine-card__title">游客</view>
+    <view class="mine-card__desc">登录后同步收藏</view>
+    <button class="btn btn--primary mine-card__btn" bindtap="onLogin">登录</button>
+  </view>
+
+  <view class="mine-card mine-card--user" wx:else>
+    <image
+      class="mine-card__avatar"
+      src="{{user.avatarUrl || defaultAvatar}}"
+      mode="aspectFill"
+    />
+    <view class="mine-card__info">
+      <view class="mine-card__title">{{user.nickname || '旅行者'}}</view>
+      <view class="mine-card__desc">已登录</view>
+    </view>
+    <text class="mine-card__logout" bindtap="onLogout">退出</text>
+  </view>
+
+  <view class="mine-group">
+    <view class="list-cell" bindtap="onOpenHistory">
+      <text class="list-cell__label">浏览记录</text>
+      <text class="list-cell__chevron">›</text>
+    </view>
+    <view class="list-cell" wx:if="{{loggedIn}}" bindtap="onOpenFavorites">
+      <text class="list-cell__label">我的收藏</text>
+      <text class="list-cell__chevron">›</text>
+    </view>
+  </view>
+
+  <view class="mine-group">
+    <view class="list-cell" bindtap="onOpenAbout">
+      <text class="list-cell__label">关于</text>
+      <text class="list-cell__chevron">›</text>
+    </view>
+    <view class="list-cell" bindtap="onOpenAgreement">
+      <text class="list-cell__label">用户协议</text>
+      <text class="list-cell__chevron">›</text>
+    </view>
+    <view class="list-cell" bindtap="onOpenPrivacy">
+      <text class="list-cell__label">隐私政策</text>
+      <text class="list-cell__chevron">›</text>
+    </view>
+  </view>
+</view>

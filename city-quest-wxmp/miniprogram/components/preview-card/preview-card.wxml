@@ -1,0 +1,16 @@
+<!-- Callers: pages/map. Signature 点位签. User: 阅读 docs 开始开发. -->
+<view class="preview-card" bindtap="onTap" hover-class="preview-card--pressed">
+  <view class="preview-card__bar" style="background-color: {{typeColor}};"></view>
+  <view class="preview-card__body">
+    <view class="preview-card__title-row">
+      <text class="preview-card__title">{{name}}</text>
+      <text class="preview-card__chevron">›</text>
+    </view>
+    <view class="preview-card__meta">
+      <text class="preview-card__dot" style="color: {{typeColor}};">●</text>
+      <text class="preview-card__type">{{typeName}}</text>
+      <text class="preview-card__sep" wx:if="{{intro}}">·</text>
+      <text class="preview-card__intro" wx:if="{{intro}}">{{intro}}</text>
+    </view>
+  </view>
+</view>

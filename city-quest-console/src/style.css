@@ -1,0 +1,22 @@
+/* Callers: main.ts. User: 开始阶段B 和 C, 完成产品闭环. */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color: #1a2332;
+  background: #f5f7f6;
+  font-family: system-ui, -apple-system, 'PingFang SC', 'Segoe UI', sans-serif;
+}
+body {
+  margin: 0;
+  min-height: 100vh;
+}
+#app {
+  min-height: 100vh;
+}
+*:focus-visible {
+  outline: 3px solid #e7eef6;
+  outline-offset: 1px;
+  border-color: #2b4c7e;
+}
