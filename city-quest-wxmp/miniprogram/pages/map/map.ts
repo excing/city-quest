@@ -3,7 +3,7 @@
  * API: GET /public/types + /public/encyclopedias
  * User: 阅读 @docs , 然后选择合适的agents或skills, 开始进行开发.
  */
-import fallbackTypes from '../../config/encyclopedia-types.json'
+import { ENCYCLOPEDIA_TYPES } from '../../config/encyclopedia-types'
 import {
   fetchPublishedList,
   fetchTypes,
@@ -37,7 +37,7 @@ Page({
     markers: [] as MapMarker[],
     includePoints: [] as Array<{ longitude: number; latitude: number }>,
     items: [] as EncyclopediaMapItem[],
-    types: fallbackTypes as EncyclopediaType[],
+    types: ENCYCLOPEDIA_TYPES,
     selected: null as SelectedPreview | null,
     loading: true,
     errorMessage: '',
@@ -52,11 +52,11 @@ Page({
   async loadData() {
     this.setData({ loading: true, errorMessage: '' })
     try {
-      let types = fallbackTypes as EncyclopediaType[]
+      let types = ENCYCLOPEDIA_TYPES
       try {
         types = await fetchTypes()
       } catch {
-        types = fallbackTypes as EncyclopediaType[]
+        types = ENCYCLOPEDIA_TYPES
       }
 
       const items = await fetchPublishedList()

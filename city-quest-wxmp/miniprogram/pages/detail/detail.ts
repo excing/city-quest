@@ -3,11 +3,10 @@
  * API: GET detail; POST/DELETE favorites; local browse write.
  * User: 开始阶段B 和 C, 完成产品闭环.
  */
-import fallbackTypes from '../../config/encyclopedia-types.json'
+import { ENCYCLOPEDIA_TYPES } from '../../config/encyclopedia-types'
 import {
   fetchDetail,
   type EncyclopediaDetail,
-  type EncyclopediaType,
 } from '../../services/encyclopedia'
 import { addFavorite, removeFavorite } from '../../services/favorite'
 import { HttpError } from '../../services/http'
@@ -62,7 +61,7 @@ Page({
     this.setData({ loading: true, unavailable: false })
     try {
       const detail = await fetchDetail(id)
-      const types = fallbackTypes as EncyclopediaType[]
+      const types = ENCYCLOPEDIA_TYPES
       this.setData({
         loading: false,
         detail,

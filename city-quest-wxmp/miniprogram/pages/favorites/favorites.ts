@@ -3,8 +3,7 @@
  * API: GET /me/favorites; DELETE for unpublished unfavorite.
  * User: 开始阶段B 和 C, 完成产品闭环.
  */
-import fallbackTypes from '../../config/encyclopedia-types.json'
-import type { EncyclopediaType } from '../../services/encyclopedia'
+import { ENCYCLOPEDIA_TYPES } from '../../config/encyclopedia-types'
 import {
   fetchFavorites,
   removeFavorite,
@@ -40,7 +39,7 @@ Page({
     this.setData({ loading: true })
     try {
       const list = await fetchFavorites()
-      const types = fallbackTypes as EncyclopediaType[]
+      const types = ENCYCLOPEDIA_TYPES
       const items: FavoriteRow[] = list.map((item) => ({
         ...item,
         typeName: typeNameForKey(item.typeKey, types),

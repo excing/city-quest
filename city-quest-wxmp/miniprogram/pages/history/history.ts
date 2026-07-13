@@ -2,8 +2,7 @@
  * Callers: mine → history. Local browse list; clear with confirm.
  * User: 阅读 @docs , 然后选择合适的agents或skills, 开始进行开发.
  */
-import fallbackTypes from '../../config/encyclopedia-types.json'
-import type { EncyclopediaType } from '../../services/encyclopedia'
+import { ENCYCLOPEDIA_TYPES } from '../../config/encyclopedia-types'
 import {
   clearBrowseHistory,
   listBrowseHistory,
@@ -28,7 +27,7 @@ Page({
   },
 
   refresh() {
-    const types = fallbackTypes as EncyclopediaType[]
+    const types = ENCYCLOPEDIA_TYPES
     const items: HistoryRow[] = listBrowseHistory().map((item) => ({
       ...item,
       typeName: typeNameForKey(item.typeKey, types),
