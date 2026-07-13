@@ -17,7 +17,7 @@ npm run dev
 
 确保 API 已启动，且 Worker `CORS_ORIGIN` 包含 `http://localhost:5173`。
 
-管理员账号来自 `ADMIN_USERNAME` / `ADMIN_PASSWORD_HASH`。
+管理员账号来自服务端环境变量 `ADMIN_USERNAME` / `ADMIN_PASSWORD`（明文配置）。
 
 ## 功能
 
