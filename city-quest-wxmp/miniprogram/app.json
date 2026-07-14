@@ -1,14 +1,5 @@
 {
   "pages": [
-    "pages/map/map",
-    "pages/mine/mine",
-    "pages/detail/detail",
-    "pages/history/history",
-    "pages/favorites/favorites",
-    "pages/login/login",
-    "pages/about/about",
-    "pages/agreement/agreement",
-    "pages/privacy/privacy"
   ],
   "window": {
     "navigationBarTextStyle": "black",
@@ -16,26 +7,6 @@
     "navigationBarBackgroundColor": "#F5F7F6",
     "backgroundColor": "#F5F7F6",
     "backgroundTextStyle": "dark"
-  },
-  "tabBar": {
-    "color": "#8B939E",
-    "selectedColor": "#2B4C7E",
-    "backgroundColor": "#FFFFFF",
-    "borderStyle": "black",
-    "list": [
-      {
-        "pagePath": "pages/map/map",
-        "text": "首页",
-        "iconPath": "assets/tab/home.png",
-        "selectedIconPath": "assets/tab/home-active.png"
-      },
-      {
-        "pagePath": "pages/mine/mine",
-        "text": "我的",
-        "iconPath": "assets/tab/mine.png",
-        "selectedIconPath": "assets/tab/mine-active.png"
-      }
-    ]
   },
   "style": "v2",
   "componentFramework": "glass-easel",
