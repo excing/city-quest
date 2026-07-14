@@ -1,15 +1,16 @@
 {
-  "name": "city_quest",
+  "name": "city-quest-wxmp",
   "version": "1.0.0",
-  "description": "",
+  "private": true,
+  "description": "我的城市探秘 — 微信原生小程序（core + features）",
   "scripts": {
-  },
-  "keywords": [],
-  "author": "",
-  "license": "",
-  "dependencies": {
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest"
   },
   "devDependencies": {
-    "miniprogram-api-typings": "^2.8.3-1"
+    "miniprogram-api-typings": "^2.8.3-1",
+    "typescript": "^5.8.3",
+    "vitest": "^3.2.4"
   }
 }

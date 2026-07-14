@@ -1,11 +1,13 @@
 /**
- * App entry. Stage A: no auto login.
+ * App entry — composition root hydrate only.
  * Callers: WeChat runtime.
- * User: 阅读 @docs , 然后选择合适的agents或skills, 开始进行开发.
  */
+
+import { initAppContext } from './app-context'
+
 App<IAppOption>({
   globalData: {},
   onLaunch() {
-    // Stage A: no wx.login bootstrap; types/list loaded on map page.
+    initAppContext()
   },
 })

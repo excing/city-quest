@@ -1,0 +1,10 @@
+<view class="page">
+  <view wx:if="{{loading}}">加载中…</view>
+  <block wx:elif="{{error}}">
+    <view class="error">{{error}}</view>
+  </block>
+  <block wx:else>
+    <view class="title">{{name}}</view>
+    <view class="intro">{{intro}}</view>
+  </block>
+</view>

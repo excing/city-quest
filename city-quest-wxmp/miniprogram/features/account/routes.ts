@@ -1,0 +1,9 @@
+/** Account / shell routes. */
+
+export const AccountRoutes = {
+  mine: '/pages/mine/mine',
+  login: '/package-account/pages/login/login',
+  about: '/package-account/pages/about/about',
+  agreement: '/package-account/pages/agreement/agreement',
+  privacy: '/package-account/pages/privacy/privacy',
+} as const

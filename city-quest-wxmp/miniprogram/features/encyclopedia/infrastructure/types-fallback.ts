@@ -1,0 +1,15 @@
+/**
+ * Local fallback when types asset fails.
+ * Callers: encyclopedia-repository.
+ */
+
+import type { EncyclopediaType } from '../domain/entities'
+
+export const FALLBACK_ENCYCLOPEDIA_TYPES: readonly EncyclopediaType[] = [
+  { key: 'food', name: '美食', color: '#F97316' },
+  { key: 'scenic', name: '景点', color: '#22C55E' },
+  { key: 'library', name: '图书馆', color: '#8B5CF6' },
+  { key: 'toilet', name: '厕所', color: '#64748B' },
+  { key: 'facility', name: '公共设施', color: '#EC4899' },
+  { key: 'goods', name: '其他', color: '#3B82F6' },
+]

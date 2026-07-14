@@ -1,0 +1,4 @@
+.page { padding: 32rpx; background: var(--color-paper); color: var(--color-ink); min-height: 100vh; }
+.title { font-size: 36rpx; font-weight: 600; margin-bottom: 16rpx; }
+.intro { line-height: 1.6; color: var(--color-ink-secondary); }
+.error { color: var(--color-danger); }

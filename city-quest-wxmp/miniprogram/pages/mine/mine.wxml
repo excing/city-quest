@@ -1,0 +1,10 @@
+<view class="page">
+  <view class="title">我的</view>
+  <view wx:if="{{loggedIn}}" class="row">已登录 {{nickname}}</view>
+  <button wx:if="{{!loggedIn}}" bindtap="goLogin">登录</button>
+  <button wx:else bindtap="onLogout">退出</button>
+  <button bindtap="goHistory">浏览记录</button>
+  <button wx:if="{{loggedIn}}" bindtap="goFavorites">我的收藏</button>
+  <button bindtap="goAbout">关于</button>
+  <view class="hint">骨架：完整 UI 见 UIUX / PRD。</view>
+</view>
