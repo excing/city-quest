@@ -1,3 +1,79 @@
-.page { padding: 32rpx; background: var(--color-paper); color: var(--color-ink); min-height: 100vh; }
-.title { font-size: 34rpx; font-weight: 600; margin-bottom: 16rpx; }
-.hint { font-size: 24rpx; color: var(--color-ink-muted); line-height: 1.5; }
+/* Callers: history.wxml. No API/schema. User: 实现阶段3. */
+.history-page {
+  min-height: 100vh;
+}
+
+.history-toolbar {
+  display: flex;
+  justify-content: flex-end;
+  padding: 16rpx 32rpx 0;
+}
+
+.history-clear {
+  font-size: 28rpx;
+  color: var(--color-primary);
+  padding: 12rpx 8rpx;
+}
+
+.history-list {
+  margin: 16rpx 32rpx 32rpx;
+  background: var(--color-surface);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-card);
+}
+
+.history-row {
+  display: flex;
+  align-items: center;
+  padding: 24rpx;
+  border-bottom: 1rpx solid var(--color-line);
+  min-height: 120rpx;
+}
+
+.history-row:last-child {
+  border-bottom: none;
+}
+
+.history-row--pressed {
+  background: var(--color-fill);
+}
+
+.history-cover {
+  width: 96rpx;
+  height: 96rpx;
+  border-radius: var(--radius-sm);
+  background: var(--color-fill);
+  flex-shrink: 0;
+  margin-right: 20rpx;
+}
+
+.history-cover--empty {
+  background: var(--color-fill);
+}
+
+.history-main {
+  flex: 1;
+  min-width: 0;
+}
+
+.history-name {
+  font-size: 30rpx;
+  color: var(--color-ink);
+  font-weight: 500;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.history-sub {
+  margin-top: 10rpx;
+  font-size: 24rpx;
+  color: var(--color-ink-secondary);
+  display: flex;
+  align-items: center;
+}
+
+.history-time {
+  color: var(--color-ink-muted);
+}

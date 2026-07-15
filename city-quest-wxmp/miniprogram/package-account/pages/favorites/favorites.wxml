@@ -1,4 +1,61 @@
-<view class="page">
-  <view class="title">我的收藏</view>
-  <view class="hint">架构骨架占位。业务实现见 PRD。</view>
+<!-- Callers: favorites page. User: 实现阶段3 -->
+<view class="fav-page cq-page cq-safe-bottom">
+  <view class="detail-loading" wx:if="{{loading}}">加载中…</view>
+
+  <view class="cq-empty" wx:elif="{{error}}">
+    <view class="cq-empty__title">加载失败</view>
+    <view class="cq-empty__desc">{{error}}</view>
+    <button class="cq-btn-ghost" bindtap="onRetry">重试</button>
+  </view>
+
+  <view class="cq-empty" wx:elif="{{empty}}">
+    <view class="cq-empty__title">还没有收藏</view>
+    <view class="cq-empty__desc">在地点详情中点击「收藏」即可添加</view>
+    <button class="cq-btn-ghost" bindtap="goMap">去地图看看</button>
+  </view>
+
+  <view class="fav-list" wx:else>
+    <view
+      class="fav-row {{item.isUnpublished ? 'fav-row--off' : ''}}"
+      wx:for="{{items}}"
+      wx:key="encyclopediaId"
+    >
+      <view
+        class="fav-row__main"
+        data-id="{{item.encyclopediaId}}"
+        data-unpublished="{{item.isUnpublished}}"
+        bindtap="onOpen"
+      >
+        <image
+          class="fav-cover"
+          wx:if="{{item.hasCover}}"
+          src="{{item.coverUrl}}"
+          mode="aspectFill"
+        />
+        <view class="fav-cover fav-cover--empty" wx:else></view>
+        <view class="fav-info">
+          <view class="fav-name">
+            {{item.name}}
+            <text class="cq-badge cq-badge--off" wx:if="{{item.isUnpublished}}">已下架</text>
+          </view>
+          <view class="fav-sub">
+            <text class="cq-type-dot" style="background: {{item.typeColor}};"></text>
+            <text>{{item.typeName}}</text>
+          </view>
+        </view>
+      </view>
+      <button
+        wx:if="{{item.isUnpublished}}"
+        class="fav-remove"
+        size="mini"
+        loading="{{item.removing}}"
+        disabled="{{item.removing}}"
+        data-id="{{item.encyclopediaId}}"
+        catchtap="onRemove"
+      >
+        取消收藏
+      </button>
+      <text class="cq-list-cell__chevron" wx:else>›</text>
+    </view>
+  </view>
 </view>

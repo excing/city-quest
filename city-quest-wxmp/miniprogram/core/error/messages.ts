@@ -9,12 +9,12 @@ import { HttpError, isHttpError } from '../http/errors'
 const TABLE: Record<string, string> = {
   UNAUTHORIZED: '请先登录',
   FORBIDDEN: '没有权限',
-  NOT_FOUND: '内容不存在或已下架',
+  NOT_FOUND: '该地点已下架，暂时无法查看',
   VALIDATION_ERROR: '参数有误',
-  WECHAT_LOGIN_FAILED: '微信登录失败，请重试',
+  WECHAT_LOGIN_FAILED: '登录失败，请重试',
   CONFLICT: '操作冲突，请重试',
   INTERNAL_ERROR: '服务异常，请稍后重试',
-  NETWORK_ERROR: '网络异常，请检查网络',
+  NETWORK_ERROR: '网络异常，请检查网络后重试',
   TIMEOUT: '请求超时，请重试',
 }
 

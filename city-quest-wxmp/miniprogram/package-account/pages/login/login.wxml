@@ -1,6 +1,37 @@
-<view class="page">
-  <view class="title">登录</view>
-  <view class="hint">骨架：完整头像昵称协议见 PRD。开发可用服务端 dev code。</view>
-  <button loading="{{loading}}" bindtap="onLogin">微信登录</button>
-  <view class="error" wx:if="{{error}}">{{error}}</view>
+<view class="login-page cq-page">
+  <view class="login-card">
+    <button class="login-avatar-btn" open-type="chooseAvatar" bindchooseavatar="onChooseAvatar">
+      <image class="login-avatar" wx:if="{{avatarUrl}}" src="{{avatarUrl}}" mode="aspectFill" />
+      <view class="login-avatar login-avatar--placeholder" wx:else>选头像</view>
+    </button>
+
+    <input
+      class="login-nickname"
+      type="nickname"
+      placeholder="填写昵称（可选）"
+      value="{{nickname}}"
+      bindinput="onNicknameInput"
+      bindblur="onNicknameBlur"
+    />
+
+    <view class="login-agree" bindtap="onToggleAgree">
+      <view class="login-check {{agreed ? 'login-check--on' : ''}}">{{agreed ? '✓' : ''}}</view>
+      <view class="login-agree__text">
+        我已阅读并同意
+        <text class="login-link" catchtap="goAgreement">《用户协议》</text>
+        <text class="login-link" catchtap="goPrivacy">《隐私政策》</text>
+      </view>
+    </view>
+
+    <button
+      class="cq-btn-primary login-submit"
+      loading="{{loading}}"
+      disabled="{{loading}}"
+      bindtap="onLogin"
+    >
+      登录
+    </button>
+
+    <view class="cq-error-inline login-error" wx:if="{{error}}">{{error}}</view>
+  </view>
 </view>

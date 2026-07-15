@@ -1,10 +1,72 @@
-<view class="page">
-  <view wx:if="{{loading}}">加载中…</view>
-  <block wx:elif="{{error}}">
-    <view class="error">{{error}}</view>
-  </block>
-  <block wx:else>
-    <view class="title">{{name}}</view>
-    <view class="intro">{{intro}}</view>
+<view class="detail-page cq-page">
+  <view class="detail-loading" wx:if="{{loading}}">加载中…</view>
+
+  <view class="detail-unavailable" wx:elif="{{unavailable}}">
+    <view class="cq-empty">
+      <view class="cq-empty__title">{{error || '该地点已下架，暂时无法查看'}}</view>
+      <view class="cq-empty__desc">可以返回首页继续逛逛</view>
+      <button class="cq-btn-primary" bindtap="onBackHome">返回首页</button>
+    </view>
+  </view>
+
+  <block wx:elif="{{detail}}">
+    <swiper
+      class="detail-gallery"
+      wx:if="{{detail.hasImages}}"
+      indicator-dots="{{detail.images.length > 1}}"
+      circular="{{detail.images.length > 1}}"
+      autoplay="{{false}}"
+    >
+      <swiper-item wx:for="{{detail.images}}" wx:key="*this">
+        <image class="detail-gallery__img" src="{{item}}" mode="aspectFill" />
+      </swiper-item>
+    </swiper>
+
+    <view class="detail-body">
+      <view class="detail-title">{{detail.name}}</view>
+      <view class="detail-type">
+        <text class="cq-type-dot" style="background: {{detail.typeColor}};"></text>
+        <text>{{detail.typeName}}</text>
+      </view>
+
+      <view class="detail-tags" wx:if="{{detail.hasTags}}">
+        <text class="detail-tag" wx:for="{{detail.tags}}" wx:key="*this">{{item}}</text>
+      </view>
+
+      <view class="detail-intro">{{detail.intro}}</view>
+
+      <view
+        class="detail-meta"
+        wx:if="{{detail.hasAddress || detail.hasBusinessHours || detail.hasAvgPrice || detail.hasPhone}}"
+      >
+        <view class="detail-meta__row" wx:if="{{detail.hasAddress}}" bindtap="onOpenMap">
+          <text class="detail-meta__label">地址</text>
+          <text class="detail-meta__value detail-meta__link">{{detail.address}}</text>
+        </view>
+        <view class="detail-meta__row" wx:if="{{detail.hasBusinessHours}}">
+          <text class="detail-meta__label">营业时间</text>
+          <text class="detail-meta__value">{{detail.businessHours}}</text>
+        </view>
+        <view class="detail-meta__row" wx:if="{{detail.hasAvgPrice}}">
+          <text class="detail-meta__label">人均</text>
+          <text class="detail-meta__value">{{detail.avgPrice}}</text>
+        </view>
+        <view class="detail-meta__row" wx:if="{{detail.hasPhone}}" bindtap="onCall">
+          <text class="detail-meta__label">电话</text>
+          <text class="detail-meta__value detail-meta__link">{{detail.phone}}</text>
+        </view>
+      </view>
+    </view>
+
+    <view class="detail-bar cq-safe-bottom">
+      <button
+        class="detail-fav {{detail.isFavorited ? 'detail-fav--on' : ''}}"
+        loading="{{favoriting}}"
+        disabled="{{favoriting}}"
+        bindtap="onToggleFavorite"
+      >
+        {{detail.isFavorited ? '★ 已收藏' : '☆ 收藏'}}
+      </button>
+    </view>
   </block>
 </view>

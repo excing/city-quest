@@ -1,8 +1,49 @@
-<view class="page">
-  <view class="title">首页 · 地图</view>
-  <view class="status">{{statusText}}</view>
-  <view class="meta" wx:if="{{markerCount}}">markers: {{markerCount}}</view>
-  <view class="error" wx:if="{{error}}">{{error}}</view>
-  <button wx:if="{{error}}" size="mini" bindtap="onRetry">重试</button>
-  <view class="hint">完整地图 UI 见 PRD 阶段 A；当前为架构骨架。</view>
+<view class="map-page">
+  <map
+    id="homeMap"
+    class="map"
+    longitude="{{longitude}}"
+    latitude="{{latitude}}"
+    scale="{{scale}}"
+    markers="{{markers}}"
+    include-points="{{includePoints}}"
+    show-location="{{false}}"
+    enable-3D="{{false}}"
+    show-compass="{{false}}"
+    enable-overlooking="{{false}}"
+    bindmarkertap="onMarkerTap"
+    bindtap="onMapTap"
+  />
+
+  <view class="map-banner map-banner--loading" wx:if="{{loading}}">
+    <text>加载点位…</text>
+  </view>
+
+  <view class="map-banner map-banner--error" wx:elif="{{error}}" bindtap="onRetry">
+    <text>{{error}}</text>
+  </view>
+
+  <view class="map-empty" wx:elif="{{empty}}">
+    <view class="map-empty__title">暂时还没有点位</view>
+    <button class="cq-btn-ghost" size="mini" bindtap="onRetry">刷新</button>
+  </view>
+
+  <view
+    class="preview-card cq-safe-bottom"
+    wx:if="{{preview}}"
+    bindtap="onOpenDetail"
+    hover-class="preview-card--pressed"
+  >
+    <view class="preview-card__bar" style="background: {{preview.typeColor}};"></view>
+    <view class="preview-card__body">
+      <view class="preview-card__name">{{preview.name}}</view>
+      <view class="preview-card__meta">
+        <text class="cq-type-dot" style="background: {{preview.typeColor}};"></text>
+        <text class="preview-card__type">{{preview.typeName}}</text>
+        <text class="preview-card__sep">·</text>
+        <text class="preview-card__intro">{{preview.intro}}</text>
+      </view>
+    </view>
+    <text class="preview-card__chevron">›</text>
+  </view>
 </view>

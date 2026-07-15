@@ -1,4 +1,25 @@
-<view class="page">
-  <view class="title">用户协议</view>
-  <view class="hint">架构骨架占位。业务实现见 PRD。</view>
+<view class="static-page cq-page cq-safe-bottom">
+  <view class="static-body">
+    <view class="static-h">一、服务说明</view>
+    <view class="static-p">
+      「我的城市探秘」向用户提供城市地点百科的浏览、本地浏览记录与登录后的收藏同步等服务。使用本小程序即表示你同意本协议。
+    </view>
+    <view class="static-h">二、账号与登录</view>
+    <view class="static-p">
+      登录依赖微信授权能力。你可选择填写昵称与头像。请妥善保管账号相关信息；不得利用本服务从事违法或侵害他人权益的行为。
+    </view>
+    <view class="static-h">三、内容与使用</view>
+    <view class="static-p">
+      百科内容由运营方维护，可能更新、下架。你理解地图展示、导航与第三方能力受设备与平台限制。请勿恶意请求、爬取或干扰服务。
+    </view>
+    <view class="static-h">四、责任限制</view>
+    <view class="static-p">
+      在法律允许范围内，因不可抗力、网络、第三方平台或你自身原因导致的服务中断或数据损失，我们在合理范围内承担责任。地点信息仅供参考，出行请以现场为准。
+    </view>
+    <view class="static-h">五、协议变更</view>
+    <view class="static-p">
+      我们可能更新本协议，更新后继续使用服务即视为接受变更。如有疑问，请通过小程序「关于」页或运营渠道联系我们。
+    </view>
+    <view class="static-p static-muted">本协议适用于「我的城市探秘」微信小程序 v1。</view>
+  </view>
 </view>

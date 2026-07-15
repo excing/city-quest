@@ -32,6 +32,13 @@ export { createBrowseHistoryRepository } from './infrastructure/browse-history-r
 
 export { upsertBrowseHistory } from './domain/rules/browse-history'
 export { toMapMarkers } from './domain/rules/markers'
+export { toWxMapMarkers } from './presentation/wx-markers'
+export type { WxMapMarker } from './presentation/wx-markers'
+export {
+  buildTypeMap,
+  typeColorOf,
+  typeNameOf,
+} from './presentation/type-label'
 
 /** Route constants for this feature (main package). */
 export const EncyclopediaRoutes = {
@@ -40,3 +47,7 @@ export const EncyclopediaRoutes = {
   history: '/package-account/pages/history/history',
   favorites: '/package-account/pages/favorites/favorites',
 } as const
+
+export function detailUrl(id: string): string {
+  return `${EncyclopediaRoutes.detail}?id=${encodeURIComponent(id)}`
+}

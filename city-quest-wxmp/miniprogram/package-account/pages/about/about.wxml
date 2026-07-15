@@ -1,4 +1,15 @@
-<view class="page">
-  <view class="title">关于</view>
-  <view class="hint">架构骨架占位。业务实现见 PRD。</view>
+<view class="static-page cq-page cq-safe-bottom">
+  <view class="static-hero">
+    <view class="static-hero__name">我的城市探秘</view>
+    <view class="static-hero__tagline">在地图上发现大理值得一去的地点</view>
+  </view>
+  <view class="static-body">
+    <view class="static-p">
+      「我的城市探秘」帮助你在地图上浏览当地美食、景点与其他地点百科，查看介绍并收藏感兴趣的地点。
+    </view>
+    <view class="static-p">
+      当前版本聚焦大理。内容由运营维护上架；你可自由浏览地图与详情，登录后可同步收藏到账号。
+    </view>
+    <view class="static-p static-muted">版本 v1 · 大理</view>
+  </view>
 </view>

@@ -1,4 +1,33 @@
-<view class="page">
-  <view class="title">隐私政策</view>
-  <view class="hint">架构骨架占位。业务实现见 PRD。</view>
+<view class="static-page cq-page cq-safe-bottom">
+  <view class="static-body">
+    <view class="static-h">我们收集的信息</view>
+    <view class="static-p">为提供服务，我们可能处理以下信息：</view>
+    <view class="static-p">· 微信登录标识（openid 等由微信开放平台返回的账号标识）</view>
+    <view class="static-p">· 你主动填写或授权的昵称、头像</view>
+    <view class="static-p">· 收藏等与账号绑定的服务端数据</view>
+    <view class="static-p">· 本地浏览记录（仅保存在你的设备，用于展示「浏览记录」）</view>
+    <view class="static-p">· 为展示地图与点位所需的位置相关展示数据（百科经纬度由运营配置，用于地图打点）</view>
+
+    <view class="static-h">我们如何使用</view>
+    <view class="static-p">
+      用于完成登录鉴权、收藏同步、展示你浏览过的地点、在地图上呈现百科点位，以及保障服务安全与稳定。我们不会将上述信息用于与本服务无关的用途。
+    </view>
+
+    <view class="static-h">存储与保留</view>
+    <view class="static-p">
+      登录凭证与用户资料按账号体系保存在服务端；浏览记录仅存于本地存储，你可随时清空。下架地点可能仍出现在你的收藏列表中以便你清理。
+    </view>
+
+    <view class="static-h">第三方与共享</view>
+    <view class="static-p">
+      登录与基础能力依赖微信平台。地图展示使用微信小程序地图组件。除实现服务所必需或法律法规要求外，我们不向无关第三方出售你的个人信息。
+    </view>
+
+    <view class="static-h">你的权利</view>
+    <view class="static-p">
+      你可退出登录、清空本地浏览记录、取消收藏。如需进一步处理个人信息相关请求，请通过运营渠道联系我们。
+    </view>
+
+    <view class="static-p static-muted">本政策适用于「我的城市探秘」微信小程序 v1。我们可能适时更新本政策。</view>
+  </view>
 </view>

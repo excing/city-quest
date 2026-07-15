@@ -46,3 +46,140 @@ image {
 button::after {
   border: none;
 }
+
+/* Shared list / empty / cell patterns (UIUX §6–8) */
+.cq-page {
+  min-height: 100vh;
+  background: var(--color-paper);
+  color: var(--color-ink);
+}
+
+.cq-card {
+  background: var(--color-surface);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+}
+
+.cq-list {
+  margin: 24rpx 32rpx;
+  background: var(--color-surface);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.cq-list-cell {
+  display: flex;
+  align-items: center;
+  min-height: 96rpx;
+  padding: 24rpx 28rpx;
+  border-bottom: 1rpx solid var(--color-line);
+}
+
+.cq-list-cell:last-child {
+  border-bottom: none;
+}
+
+.cq-list-cell__main {
+  flex: 1;
+  min-width: 0;
+}
+
+.cq-list-cell__title {
+  font-size: 30rpx;
+  color: var(--color-ink);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.cq-list-cell__sub {
+  margin-top: 8rpx;
+  font-size: 24rpx;
+  color: var(--color-ink-secondary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.cq-list-cell__chevron {
+  margin-left: 16rpx;
+  color: var(--color-ink-muted);
+  font-size: 32rpx;
+}
+
+.cq-empty {
+  padding: 120rpx 48rpx;
+  text-align: center;
+}
+
+.cq-empty__title {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: var(--color-ink);
+  margin-bottom: 12rpx;
+}
+
+.cq-empty__desc {
+  font-size: 26rpx;
+  color: var(--color-ink-secondary);
+  line-height: 1.5;
+  margin-bottom: 32rpx;
+}
+
+.cq-btn-primary {
+  background: var(--color-primary);
+  color: #fff;
+  border-radius: var(--radius-pill);
+  font-size: 30rpx;
+  line-height: 88rpx;
+  height: 88rpx;
+  padding: 0 48rpx;
+}
+
+.cq-btn-primary[disabled] {
+  opacity: 0.5;
+}
+
+.cq-btn-ghost {
+  background: var(--color-primary-soft);
+  color: var(--color-primary);
+  border-radius: var(--radius-pill);
+  font-size: 28rpx;
+  line-height: 72rpx;
+  height: 72rpx;
+  padding: 0 32rpx;
+}
+
+.cq-type-dot {
+  display: inline-block;
+  width: 16rpx;
+  height: 16rpx;
+  border-radius: 50%;
+  margin-right: 10rpx;
+  vertical-align: middle;
+}
+
+.cq-badge {
+  display: inline-block;
+  font-size: 20rpx;
+  line-height: 32rpx;
+  padding: 0 12rpx;
+  border-radius: var(--radius-sm);
+  background: var(--color-fill);
+  color: var(--color-ink-muted);
+}
+
+.cq-badge--off {
+  background: var(--color-fill);
+  color: var(--color-ink-muted);
+}
+
+.cq-error-inline {
+  color: var(--color-danger);
+  font-size: 26rpx;
+  line-height: 1.5;
+}
+
+.cq-safe-bottom {
+  padding-bottom: calc(24rpx + env(safe-area-inset-bottom));
+}

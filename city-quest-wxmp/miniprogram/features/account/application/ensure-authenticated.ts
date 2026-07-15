@@ -21,7 +21,8 @@ async function defaultConfirm(): Promise<boolean> {
   return new Promise((resolve) => {
     wx.showModal({
       title: '需要登录',
-      content: '登录后可使用收藏等功能。登录成功后请再次点击操作。',
+      content:
+        '登录后收藏会保存到你的账号，换手机也能查看。登录成功后将返回本页，需再次点击收藏。',
       confirmText: '去登录',
       cancelText: '取消',
       success(res) {
