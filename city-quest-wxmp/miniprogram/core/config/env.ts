@@ -15,7 +15,7 @@ export interface AppEnv {
  * Local develop default. Override before device testing.
  * Do NOT commit personal LAN IPs as the project default.
  */
-const DEVELOP_API_BASE_URL = 'http://127.0.0.1:8787'
+const DEVELOP_API_BASE_URL = 'http://192.168.0.107:8787'
 
 /** Set for trial/release builds (custom domain). */
 const TRIAL_API_BASE_URL = 'https://api.example.com'
