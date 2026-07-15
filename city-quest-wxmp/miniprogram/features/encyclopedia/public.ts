@@ -43,9 +43,14 @@ export { upsertBrowseHistory } from './domain/rules/browse-history'
 export { toMapMarkers } from './domain/rules/markers'
 export {
   collectMarkerIconRequests,
+  createMarkerIdMap,
+  patchMarkersSelection,
   toWxMapMarkers,
 } from './presentation/wx-markers'
-export type { WxMapMarker } from './presentation/wx-markers'
+export type {
+  PatchMarkersSelectionResult,
+  WxMapMarker,
+} from './presentation/wx-markers'
 export {
   createMarkerIconService,
   FALLBACK_MARKER_ICON,

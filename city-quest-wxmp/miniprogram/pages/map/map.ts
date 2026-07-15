@@ -7,6 +7,7 @@
  * - First visit: full reload + one-shot includePoints fit.
  * - Later onShow: soft refresh (repo TTL cache, no loading banner, keep viewport).
  * - Icons: two-phase — paint with cached/fallback paths, then ensureAll + patch.
+ * - Selection: path-style setData on changed markers only (Sprint B).
  */
 
 import { getAppContext } from '../../app-context'
@@ -22,8 +23,10 @@ import {
   buildTypeMap,
   collectMarkerIconRequests,
   createMarkerIconService,
+  createMarkerIdMap,
   detailUrl,
   FALLBACK_MARKER_ICON,
+  patchMarkersSelection,
   toWxMapMarkers,
   typeNameOf,
   typeColorOf,
@@ -33,6 +36,9 @@ import {
 import { createLoadSeq } from '../../shared/lib/load-seq'
 
 const loadSeq = createLoadSeq()
+
+/** Swallow map tap that WeChat often fires immediately after markertap. */
+const MAP_TAP_GUARD_MS = 150
 
 interface PreviewCard {
   id: string
@@ -58,13 +64,17 @@ Page({
 
   _items: [] as EncyclopediaListItem[],
   _markersVm: [] as MapMarkerVm[],
+  _vmById: {} as Record<string, MapMarkerVm>,
   _typeMap: {} as Record<string, { key: string; name: string; color: string }>,
   _wxMarkers: [] as WxMapMarker[],
   _iconService: null as MarkerIconService | null,
+  _markerIds: createMarkerIdMap(),
   /** True after the first successful paint with data (or empty). */
   _hasLoadedOnce: false,
   /** Only apply includePoints / center fit once so user pan/zoom is kept. */
   _didFitViewport: false,
+  /** Ignore bindtap until this timestamp (ms) after a successful markertap. */
+  _ignoreMapTapUntil: 0 as number,
 
   onShow() {
     if (this._hasLoadedOnce) {
@@ -87,6 +97,18 @@ Page({
 
   iconPathOf(color: string, selected: boolean): string {
     return this.iconService().pathOf(color, selected) ?? FALLBACK_MARKER_ICON
+  },
+
+  idOf(encyclopediaId: string): number {
+    return this._markerIds.idOf(encyclopediaId)
+  },
+
+  buildVmById(markers: readonly MapMarkerVm[]): Record<string, MapMarkerVm> {
+    const map: Record<string, MapMarkerVm> = {}
+    for (const m of markers) {
+      map[m.id] = m
+    }
+    return map
   },
 
   async reload(opts?: { soft?: boolean; forceRefresh?: boolean }) {
@@ -131,11 +153,13 @@ Page({
     const typeMap = buildTypeMap(result.types)
     this._items = result.items
     this._markersVm = result.markers
+    this._vmById = this.buildVmById(result.markers)
     this._typeMap = typeMap
     getAppContext().setEncyclopediaTypes(result.types)
 
     const colorOf = (styleKey: string) => typeColorOf(styleKey, typeMap)
     const selectedId = this.data.selectedId || null
+    const idOf = (encyclopediaId: string) => this.idOf(encyclopediaId)
 
     // Phase 1: paint immediately with cached icon paths or fallback.
     const phase1 = toWxMapMarkers(
@@ -144,6 +168,7 @@ Page({
       colorOf,
       (color, selected) =>
         this.iconService().pathOf(color, selected) ?? FALLBACK_MARKER_ICON,
+      idOf,
     )
     this._wxMarkers = phase1
 
@@ -191,12 +216,14 @@ Page({
     await this.iconService().ensureAll(requests)
     if (!loadSeq.isCurrent(seq)) return
 
+    // Keep current selection (user may have tapped during ensureAll).
     const phase2 = toWxMapMarkers(
       result.markers,
       this.data.selectedId || null,
       colorOf,
       (color, selected) =>
         this.iconService().pathOf(color, selected) ?? FALLBACK_MARKER_ICON,
+      idOf,
     )
     this._wxMarkers = phase2
     this.setData({ markers: phase2 })
@@ -214,53 +241,47 @@ Page({
     }
   },
 
-  rebuildMarkers(selectedId: string | null) {
-    const source: MapMarkerVm[] =
-      this._markersVm.length > 0
-        ? this._markersVm.map((m) => ({
-            ...m,
-            selected: selectedId ? m.id === selectedId : false,
-          }))
-        : this._items.map((item) => ({
-            id: item.id,
-            lng: item.lng,
-            lat: item.lat,
-            styleKey: item.typeKey,
-            title: item.name,
-            selected: selectedId ? item.id === selectedId : false,
-          }))
+  /**
+   * Selection change: only setData the 1–2 markers whose style changes.
+   */
+  applySelection(nextSelectedId: string | null) {
+    const prevSelectedId = this.data.selectedId || null
+    const { markers, setDataPatch } = patchMarkersSelection({
+      markers: this._wxMarkers,
+      prevSelectedId,
+      nextSelectedId,
+      vmById: this._vmById,
+      colorOf: (styleKey) => this.colorOf(styleKey),
+      iconPathOf: (color, selected) => this.iconPathOf(color, selected),
+    })
+    this._wxMarkers = markers
+    this._markersVm = this._markersVm.map((m) => ({
+      ...m,
+      selected: nextSelectedId ? m.id === nextSelectedId : false,
+    }))
 
-    const wxMarkers = toWxMapMarkers(
-      source,
-      selectedId,
-      (styleKey) => this.colorOf(styleKey),
-      (color, selected) => this.iconPathOf(color, selected),
-    )
-    this._wxMarkers = wxMarkers
-    this._markersVm = source
-    return wxMarkers
+    const preview = nextSelectedId ? this.buildPreview(nextSelectedId) : null
+    const data: WechatMiniprogram.IAnyObject = {
+      ...setDataPatch,
+      selectedId: nextSelectedId || '',
+      preview,
+    }
+    this.setData(data)
   },
 
   onMarkerTap(e: WechatMiniprogram.MarkerTap) {
     const markerId = e.detail.markerId
     const hit = this._wxMarkers.find((m) => m.id === markerId)
     if (!hit) return
-    const selectedId = hit.encyclopediaId
-    const preview = this.buildPreview(selectedId)
-    this.setData({
-      selectedId,
-      preview,
-      markers: this.rebuildMarkers(selectedId),
-    })
+    this.applySelection(hit.encyclopediaId)
+    // WeChat often fires bindtap right after markertap; block blank-map clear briefly.
+    this._ignoreMapTapUntil = Date.now() + MAP_TAP_GUARD_MS
   },
 
   onMapTap() {
+    if (Date.now() < this._ignoreMapTapUntil) return
     if (!this.data.selectedId && !this.data.preview) return
-    this.setData({
-      selectedId: '',
-      preview: null,
-      markers: this.rebuildMarkers(null),
-    })
+    this.applySelection(null)
   },
 
   onOpenDetail() {
