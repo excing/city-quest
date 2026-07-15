@@ -16,10 +16,45 @@ export interface LoadMapPointsResult {
   viewport: MapViewport
 }
 
-export function createLoadMapPoints(repo: EncyclopediaRepository) {
+export interface LoadMapPointsOptions {
+  selectedId?: string | null
+  /** Bypass repository TTL cache (e.g. user retry). */
+  forceRefresh?: boolean
+}
+
+export interface LoadMapPointsDeps {
+  /**
+   * Optional cache control from decorator (architecture §9).
+   * Absent when repository is uncached (tests).
+   */
+  invalidateCache?: (scope?: 'list' | 'types' | 'all') => void
+}
+
+export function createLoadMapPoints(
+  repo: EncyclopediaRepository,
+  deps?: LoadMapPointsDeps,
+) {
   return async function loadMapPoints(
-    selectedId?: string | null,
+    selectedIdOrOptions?: string | null | LoadMapPointsOptions,
   ): Promise<LoadMapPointsResult> {
+    // Back-compat: loadMapPoints(selectedId) | loadMapPoints({ selectedId, forceRefresh })
+    let selectedId: string | null | undefined
+    let forceRefresh = false
+    if (
+      selectedIdOrOptions !== null &&
+      typeof selectedIdOrOptions === 'object' &&
+      !Array.isArray(selectedIdOrOptions)
+    ) {
+      selectedId = selectedIdOrOptions.selectedId
+      forceRefresh = Boolean(selectedIdOrOptions.forceRefresh)
+    } else {
+      selectedId = selectedIdOrOptions as string | null | undefined
+    }
+
+    if (forceRefresh) {
+      deps?.invalidateCache?.('all')
+    }
+
     const [items, types] = await Promise.all([
       repo.listPublished(),
       repo.listTypes(),

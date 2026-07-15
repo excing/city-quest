@@ -110,8 +110,10 @@ Page({
   async load(id: string) {
     this.setData({ loading: true, error: '', unavailable: false })
     try {
-      const detail = await getAppContext().openDetail(id)
-      const typeMap = buildTypeMap([])
+      const ctx = getAppContext()
+      const detail = await ctx.openDetail(id)
+      // Prefer types warmed by home map; defaults fill missing keys.
+      const typeMap = buildTypeMap(ctx.getEncyclopediaTypes())
       const vm = toVm(detail, typeMap)
       this.setData({
         loading: false,

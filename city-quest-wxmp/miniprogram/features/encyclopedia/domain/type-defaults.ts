@@ -1,0 +1,18 @@
+/**
+ * Canonical encyclopedia type defaults (display + fallback).
+ * Callers: type-label, types-fallback, tests. Single source — do not duplicate.
+ */
+
+import type { EncyclopediaType } from './entities'
+
+export const DEFAULT_ENCYCLOPEDIA_TYPES: readonly EncyclopediaType[] = [
+  { key: 'food', name: '美食', color: '#F97316' },
+  { key: 'scenic', name: '景点', color: '#22C55E' },
+  { key: 'library', name: '图书馆', color: '#8B5CF6' },
+  { key: 'toilet', name: '厕所', color: '#64748B' },
+  { key: 'facility', name: '公共设施', color: '#EC4899' },
+  { key: 'goods', name: '其他', color: '#3B82F6' },
+]
+
+/** Design ink when typeKey unknown. */
+export const DEFAULT_TYPE_COLOR = '#2B4C7E'

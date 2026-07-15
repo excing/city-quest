@@ -34,6 +34,7 @@ npm test
 ## 说明
 
 - 地图 marker：按类型色 **Canvas 动态画圆点**（`features/encyclopedia/presentation/marker-icon-*`），缓存到用户目录；仅保留 `assets/markers/default.png` 作失败回退。`<map>` 不支持 SVG `iconPath`。
+- 首页加载：仓储 TTL 缓存（列表 60s / 类型 1h）+ 首访一次 fit 视野 + 再 `onShow` soft refresh；图标两阶段渲染（先 fallback/缓存 path，再 `ensureAll` patch）。
 - 完整交互与视觉以父仓 `docs/` 中 PRD / UIUX / 架构文档为准。
 - Tab 图标未配置时可在开发者工具中暂用文字 Tab（已配置 text）。
 - 切勿将 `WECHAT_SECRET` / `JWT_SECRET` 写入小程序。
