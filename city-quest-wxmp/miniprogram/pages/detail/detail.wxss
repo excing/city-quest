@@ -120,6 +120,7 @@
   line-height: 88rpx;
   border-radius: var(--radius-pill);
   font-size: 30rpx;
+  padding: 0 48rpx;
   background: var(--color-primary-soft);
   color: var(--color-primary);
 }
