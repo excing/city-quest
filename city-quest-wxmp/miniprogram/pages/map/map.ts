@@ -1,6 +1,7 @@
 /**
  * Home map — full published markers + preview card (Phase 3).
  * Callers: WeChat router (tab).
+ * Markers: canvas-generated colored discs (cached by type color).
  */
 
 import { getAppContext } from '../../app-context'
@@ -10,10 +11,14 @@ import { navigateTo } from '../../core/navigation/nav'
 import type { EncyclopediaListItem } from '../../features/encyclopedia/public'
 import {
   buildTypeMap,
+  collectMarkerIconRequests,
+  createMarkerIconService,
   detailUrl,
+  FALLBACK_MARKER_ICON,
   toWxMapMarkers,
   typeNameOf,
   typeColorOf,
+  type MarkerIconService,
   type WxMapMarker,
 } from '../../features/encyclopedia/public'
 import { createLoadSeq } from '../../shared/lib/load-seq'
@@ -45,9 +50,25 @@ Page({
   _items: [] as EncyclopediaListItem[],
   _typeMap: {} as Record<string, { key: string; name: string; color: string }>,
   _wxMarkers: [] as WxMapMarker[],
+  _iconService: null as MarkerIconService | null,
 
   onShow() {
     void this.reload()
+  },
+
+  iconService(): MarkerIconService {
+    if (!this._iconService) {
+      this._iconService = createMarkerIconService()
+    }
+    return this._iconService
+  },
+
+  colorOf(styleKey: string): string {
+    return typeColorOf(styleKey, this._typeMap)
+  },
+
+  iconPathOf(color: string, selected: boolean): string {
+    return this.iconService().pathOf(color, selected) ?? FALLBACK_MARKER_ICON
   },
 
   async reload() {
@@ -58,9 +79,21 @@ Page({
       if (!loadSeq.isCurrent(seq)) return
 
       const typeMap = buildTypeMap(result.types)
-      const wxMarkers = toWxMapMarkers(result.markers, this.data.selectedId || null)
       this._items = result.items
       this._typeMap = typeMap
+
+      const colorOf = (styleKey: string) => typeColorOf(styleKey, typeMap)
+      const requests = collectMarkerIconRequests(result.markers, colorOf)
+      await this.iconService().ensureAll(requests)
+      if (!loadSeq.isCurrent(seq)) return
+
+      const wxMarkers = toWxMapMarkers(
+        result.markers,
+        this.data.selectedId || null,
+        colorOf,
+        (color, selected) =>
+          this.iconService().pathOf(color, selected) ?? FALLBACK_MARKER_ICON,
+      )
       this._wxMarkers = wxMarkers
 
       const includePoints =
@@ -133,6 +166,8 @@ Page({
         selected: selectedId ? item.id === selectedId : false,
       })),
       selectedId,
+      (styleKey) => this.colorOf(styleKey),
+      (color, selected) => this.iconPathOf(color, selected),
     )
     this._wxMarkers = wxMarkers
     return wxMarkers

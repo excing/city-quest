@@ -33,6 +33,7 @@ npm test
 
 ## 说明
 
-- 当前为**架构骨架 + 首发 feature 接线**；完整地图/登录 UI 按 PRD 阶段 A–C 迭代。
+- 地图 marker：按类型色 **Canvas 动态画圆点**（`features/encyclopedia/presentation/marker-icon-*`），缓存到用户目录；仅保留 `assets/markers/default.png` 作失败回退。`<map>` 不支持 SVG `iconPath`。
+- 完整交互与视觉以父仓 `docs/` 中 PRD / UIUX / 架构文档为准。
 - Tab 图标未配置时可在开发者工具中暂用文字 Tab（已配置 text）。
 - 切勿将 `WECHAT_SECRET` / `JWT_SECRET` 写入小程序。

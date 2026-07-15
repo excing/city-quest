@@ -32,8 +32,16 @@ export { createBrowseHistoryRepository } from './infrastructure/browse-history-r
 
 export { upsertBrowseHistory } from './domain/rules/browse-history'
 export { toMapMarkers } from './domain/rules/markers'
-export { toWxMapMarkers } from './presentation/wx-markers'
+export {
+  collectMarkerIconRequests,
+  toWxMapMarkers,
+} from './presentation/wx-markers'
 export type { WxMapMarker } from './presentation/wx-markers'
+export {
+  createMarkerIconService,
+  FALLBACK_MARKER_ICON,
+} from './presentation/marker-icon-service'
+export type { MarkerIconService } from './presentation/marker-icon-service'
 export {
   buildTypeMap,
   typeColorOf,
