@@ -12,6 +12,7 @@
     show-compass="{{false}}"
     enable-overlooking="{{false}}"
     bindmarkertap="onMarkerTap"
+    bindlabeltap="onMarkerTap"
     bindtap="onMapTap"
     enable-poi="{{false}}"
   />

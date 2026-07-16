@@ -8,6 +8,15 @@
 
 import type { MapMarkerVm } from '../../../core/map/types'
 import { markerIconStyle } from './marker-icon-style'
+import {
+  markerLabelStyle,
+  type WxMapMarkerLabel,
+} from './marker-label-style'
+
+export type { WxMapMarkerLabel }
+
+/** Disc icons grow from center on select (WeChat default is bottom-center). */
+export const MARKER_ICON_ANCHOR = { x: 0.5, y: 0.5 } as const
 
 export interface WxMapMarker {
   id: number
@@ -16,8 +25,15 @@ export interface WxMapMarker {
   iconPath: string
   width: number
   height: number
+  /**
+   * Icon anchor on the bitmap (0–1). Center keeps lat/lng under the disc
+   * when width/height jump 24 → 32 on selection.
+   */
+  anchor: { x: number; y: number }
   /** Domain id for navigation */
   encyclopediaId: string
+  /** Right-side always-on name chip; omitted when title is empty. */
+  label?: WxMapMarkerLabel
 }
 
 /**
@@ -61,6 +77,7 @@ export function toWxMapMarkers(
     const selected = selectedId ? m.id === selectedId : Boolean(m.selected)
     const color = colorOf(m.styleKey)
     const style = markerIconStyle(color, selected)
+    const label = markerLabelStyle(m.title, color, selected) ?? undefined
     return {
       id: idOf(m.id),
       latitude: m.lat,
@@ -68,7 +85,9 @@ export function toWxMapMarkers(
       iconPath: iconPathOf(color, selected),
       width: style.displaySize,
       height: style.displaySize,
+      anchor: { ...MARKER_ICON_ANCHOR },
       encyclopediaId: m.id,
+      ...(label ? { label } : {}),
     }
   })
 }
@@ -170,13 +189,18 @@ export function patchMarkersSelection(
     const selected = next != null && m.encyclopediaId === next
     const color = args.colorOf(styleKey)
     const style = markerIconStyle(color, selected)
+    const label = markerLabelStyle(vm.title, color, selected)
+    // Drop previous label so empty titles don't leave a stale chip via setData.
+    const { label: _prevLabel, ...rest } = m
     const patched: WxMapMarker = {
-      ...m,
+      ...rest,
       iconPath: args.iconPathOf(color, selected),
       width: style.displaySize,
       height: style.displaySize,
+      anchor: { ...MARKER_ICON_ANCHOR },
       latitude: vm.lat,
       longitude: vm.lng,
+      ...(label ? { label } : {}),
     }
     nextMarkers[i] = patched
     setDataPatch[`markers[${i}]`] = patched

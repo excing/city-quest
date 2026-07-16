@@ -269,12 +269,16 @@ Page({
     this.setData(data)
   },
 
-  onMarkerTap(e: WechatMiniprogram.MarkerTap) {
+  /**
+   * Icon (markertap) and name chip (labeltap) share the same detail shape:
+   * { markerId }. Both select the encyclopedia point.
+   */
+  onMarkerTap(e: WechatMiniprogram.MarkerTap | WechatMiniprogram.LabelTap) {
     const markerId = e.detail.markerId
     const hit = this._wxMarkers.find((m) => m.id === markerId)
     if (!hit) return
     this.applySelection(hit.encyclopediaId)
-    // WeChat often fires bindtap right after markertap; block blank-map clear briefly.
+    // WeChat often fires bindtap right after markertap/labeltap; block blank-map clear briefly.
     this._ignoreMapTapUntil = Date.now() + MAP_TAP_GUARD_MS
   },
 

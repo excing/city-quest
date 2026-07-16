@@ -42,18 +42,37 @@ describe('toWxMapMarkers', () => {
       longitude: 100.1,
       latitude: 25.6,
       encyclopediaId: 'a',
-      width: 24,
-      height: 24,
+      width: 18,
+      height: 18,
+      anchor: { x: 0.5, y: 0.5 },
       iconPath: 'cache://#f97316|0',
+      label: {
+        content: '面馆',
+        fontSize: 14,
+        color: '#1a2332',
+        textAlign: 'right',
+      },
     })
     expect(wx[1].iconPath).toBe('cache://#2b4c7e|0')
+    expect(wx[1].label?.content).toBe('未知')
   })
 
   it('uses selected icon size when selectedId matches', () => {
     const wx = toWxMapMarkers(markers, 'a', colorOf, iconPathOf)
     expect(wx[0].iconPath).toBe('cache://#f97316|1')
-    expect(wx[0].width).toBe(32)
-    expect(wx[1].width).toBe(24)
+    expect(wx[0].width).toBe(24)
+    expect(wx[0].label?.fontSize).toBe(18)
+    expect(wx[0].label?.color).toBe('#1a2332')
+    expect(wx[0].label?.bgColor).toBe('#00000000')
+    expect(wx[1].width).toBe(18)
+  })
+
+  it('omits label when title is missing', () => {
+    const bare: MapMarkerVm[] = [
+      { id: 'z', lng: 1, lat: 2, styleKey: 'food' },
+    ]
+    const wx = toWxMapMarkers(bare, null, colorOf, iconPathOf)
+    expect(wx[0].label).toBeUndefined()
   })
 
   it('uses stable idOf when provided', () => {
@@ -109,9 +128,9 @@ describe('collectMarkerIconRequests', () => {
 
 describe('patchMarkersSelection', () => {
   const vms: MapMarkerVm[] = [
-    { id: 'a', lng: 100, lat: 25, styleKey: 'food' },
-    { id: 'b', lng: 101, lat: 26, styleKey: 'scenic' },
-    { id: 'c', lng: 102, lat: 27, styleKey: 'food' },
+    { id: 'a', lng: 100, lat: 25, styleKey: 'food', title: '面馆' },
+    { id: 'b', lng: 101, lat: 26, styleKey: 'scenic', title: '洱海' },
+    { id: 'c', lng: 102, lat: 27, styleKey: 'food', title: '小吃' },
   ]
   const colorOf = (k: string) => (k === 'food' ? '#F97316' : '#22C55E')
   const iconPathOf = (color: string, selected: boolean) =>
@@ -130,9 +149,12 @@ describe('patchMarkersSelection', () => {
       iconPathOf,
     })
     expect(Object.keys(withA.setDataPatch)).toEqual(['markers[0]'])
-    expect(withA.markers[0].width).toBe(32)
+    expect(withA.markers[0].width).toBe(24)
     expect(withA.markers[0].iconPath).toBe('#F97316|1')
-    expect(withA.markers[1].width).toBe(24)
+    expect(withA.markers[0].label?.color).toBe('#1a2332')
+    expect(withA.markers[0].label?.fontSize).toBe(18)
+    expect(withA.markers[0].label?.bgColor).toBe('#00000000')
+    expect(withA.markers[1].width).toBe(18)
 
     const toB = patchMarkersSelection({
       markers: withA.markers,
@@ -146,13 +168,13 @@ describe('patchMarkersSelection', () => {
       'markers[0]',
       'markers[1]',
     ])
-    expect(toB.markers[0].width).toBe(24)
+    expect(toB.markers[0].width).toBe(18)
     expect(toB.markers[0].iconPath).toBe('#F97316|0')
-    expect(toB.markers[1].width).toBe(32)
+    expect(toB.markers[1].width).toBe(24)
     expect(toB.markers[1].iconPath).toBe('#22C55E|1')
     // untouched
     expect(toB.setDataPatch['markers[2]']).toBeUndefined()
-    expect(toB.markers[2].width).toBe(24)
+    expect(toB.markers[2].width).toBe(18)
   })
 
   it('returns empty patch when selection unchanged', () => {
@@ -185,6 +207,6 @@ describe('patchMarkersSelection', () => {
       iconPathOf,
     })
     expect(Object.keys(cleared.setDataPatch)).toEqual(['markers[2]'])
-    expect(cleared.markers[2].width).toBe(24)
+    expect(cleared.markers[2].width).toBe(18)
   })
 })

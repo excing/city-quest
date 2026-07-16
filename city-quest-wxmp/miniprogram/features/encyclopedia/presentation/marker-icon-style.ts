@@ -6,8 +6,8 @@
 /** Matches typeColorOf fallback / design ink. */
 export const DEFAULT_MARKER_COLOR = '#2b4c7e'
 
-const NORMAL_DISPLAY = 24
-const SELECTED_DISPLAY = 32
+const NORMAL_DISPLAY = 18
+const SELECTED_DISPLAY = 24
 const PIXEL_RATIO = 2
 
 /** White stroke in CSS px (design ~1.5–2). */

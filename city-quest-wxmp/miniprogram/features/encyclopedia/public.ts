@@ -50,6 +50,7 @@ export {
 export type {
   PatchMarkersSelectionResult,
   WxMapMarker,
+  WxMapMarkerLabel,
 } from './presentation/wx-markers'
 export {
   createMarkerIconService,

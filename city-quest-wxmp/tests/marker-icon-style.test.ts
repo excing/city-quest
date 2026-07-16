@@ -54,8 +54,8 @@ describe('markerIconStyle', () => {
     expect(style).toMatchObject({
       color: '#f97316',
       selected: false,
-      displaySize: 24,
-      canvasSize: 48,
+      displaySize: 18,
+      canvasSize: 36,
     })
     expect(style.radius).toBeGreaterThan(0)
     expect(style.strokeWidth).toBeGreaterThan(0)
@@ -67,8 +67,8 @@ describe('markerIconStyle', () => {
   it('uses larger selected size and thicker stroke', () => {
     const normal = markerIconStyle('#22C55E', false)
     const selected = markerIconStyle('#22C55E', true)
-    expect(selected.displaySize).toBe(32)
-    expect(selected.canvasSize).toBe(64)
+    expect(selected.displaySize).toBe(24)
+    expect(selected.canvasSize).toBe(48)
     expect(selected.displaySize).toBeGreaterThan(normal.displaySize)
     expect(selected.strokeWidth).toBeGreaterThanOrEqual(normal.strokeWidth)
   })
