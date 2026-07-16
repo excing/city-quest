@@ -13,6 +13,7 @@
     enable-overlooking="{{false}}"
     bindmarkertap="onMarkerTap"
     bindtap="onMapTap"
+    enable-poi="{{false}}"
   />
 
   <view class="map-banner map-banner--loading" wx:if="{{loading}}">
@@ -28,22 +29,29 @@
     <button class="cq-btn-ghost" size="mini" bindtap="onRetry">刷新</button>
   </view>
 
+  <!-- 点位签：外层只管落位与安全区，内层才是纸面签本体 -->
   <view
-    class="preview-card cq-safe-bottom"
+    class="preview-dock cq-safe-bottom"
     wx:if="{{preview}}"
     bindtap="onOpenDetail"
-    hover-class="preview-card--pressed"
+    hover-class="preview-dock--pressed"
   >
-    <view class="preview-card__bar" style="background: {{preview.typeColor}};"></view>
-    <view class="preview-card__body">
-      <view class="preview-card__name">{{preview.name}}</view>
-      <view class="preview-card__meta">
-        <text class="cq-type-dot" style="background: {{preview.typeColor}};"></text>
-        <text class="preview-card__type">{{preview.typeName}}</text>
-        <text class="preview-card__sep">·</text>
-        <text class="preview-card__intro">{{preview.intro}}</text>
+    <view class="preview-card">
+      <view class="preview-card__bar" style="background: {{preview.typeColor}};"></view>
+      <view class="preview-card__body">
+        <view class="preview-card__head">
+          <view class="preview-card__name">{{preview.name}}</view>
+          <view class="preview-card__go">
+            <text class="preview-card__go-label">详情</text>
+            <text class="preview-card__go-chevron">›</text>
+          </view>
+        </view>
+        <view class="preview-card__type">
+          <text class="cq-type-dot" style="background: {{preview.typeColor}};"></text>
+          <text class="preview-card__type-name">{{preview.typeName}}</text>
+        </view>
+        <view class="preview-card__intro" wx:if="{{preview.intro}}">{{preview.intro}}</view>
       </view>
     </view>
-    <text class="preview-card__chevron">›</text>
   </view>
 </view>
