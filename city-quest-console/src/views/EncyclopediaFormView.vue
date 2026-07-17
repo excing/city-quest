@@ -33,7 +33,6 @@ const types = ref<EncyclopediaType[]>([...ENCYCLOPEDIA_TYPES])
 const loading = ref(isEdit.value)
 const saving = ref(false)
 const error = ref('')
-const imageUrls = ref<string[]>([])
 
 const form = reactive({
   name: '',
@@ -73,7 +72,6 @@ onMounted(async () => {
       form.tags = [...(row.tags ?? [])]
       form.images = [...(row.images ?? [])]
       form.status = row.status === 'published' ? 'published' : 'unpublished'
-      imageUrls.value = [...(row.imageUrls ?? [])]
     } catch (e) {
       error.value = e instanceof ApiError ? e.message : '加载失败'
     } finally {
@@ -228,7 +226,7 @@ async function onDelete() {
       <div>
         <label class="text-sm font-medium">图片</label>
         <div class="mt-1">
-          <ImageUploader v-model="form.images" :urls="imageUrls" />
+          <ImageUploader v-model="form.images" />
         </div>
       </div>
 

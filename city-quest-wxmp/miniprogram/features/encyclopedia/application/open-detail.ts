@@ -15,11 +15,15 @@ export function createOpenDetail(
 ) {
   return async function openDetail(id: string): Promise<EncyclopediaDetail> {
     const detail = await encyclopediaRepo.getById(id)
+    const coverKey =
+      detail.coverKey ??
+      (detail.images?.length ? detail.images[0] : null) ??
+      null
     browseRepo.upsert({
       id: detail.id,
       name: detail.name,
       typeKey: detail.typeKey,
-      coverUrl: detail.coverUrl ?? null,
+      coverKey,
       intro: detail.intro,
     })
     return detail

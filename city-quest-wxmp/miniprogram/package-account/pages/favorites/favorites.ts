@@ -2,11 +2,12 @@
  * Server-side favorites list (Phase 3). Login required.
  * Callers: WeChat router; entry from pages/mine when logged in.
  * API: listFavorites / removeFavorite via getAppContext().
- * Schema: FavoriteListItem { encyclopediaId, name, typeKey, coverUrl?, intro?, status, favoritedAt }.
+ * Schema: FavoriteListItem { encyclopediaId, name, typeKey, coverKey?, intro?, status, favoritedAt }.
  * User instruction: 按该文档, 选择合适的agents/skills, 实现阶段3.
  */
 
 import { getAppContext } from '../../../app-context'
+import { fileUrl } from '../../../core/config/env'
 import { messageFromUnknown } from '../../../core/error/messages'
 import { navigateTo, switchTab } from '../../../core/navigation/nav'
 import { AccountRoutes } from '../../../features/account/public'
@@ -34,7 +35,7 @@ interface FavoriteRow {
 function toRows(items: FavoriteListItem[]): FavoriteRow[] {
   const typeMap = buildTypeMap([])
   return items.map((item) => {
-    const coverUrl = item.coverUrl || ''
+    const coverUrl = fileUrl(item.coverKey)
     const status = (item.status || '').toLowerCase()
     const isUnpublished =
       status === 'unpublished' || status === 'offline' || status === 'draft'

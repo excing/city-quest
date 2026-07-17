@@ -1,14 +1,13 @@
 <script setup lang="ts">
 /**
- * Callers: EncyclopediaFormView. Upload keys; first = cover.
- * API: POST /admin/uploads. User: 开始阶段B 和 C, 完成产品闭环.
+ * Callers: EncyclopediaFormView. v-model = media keys; first = cover.
+ * API: POST /admin/uploads → { key }; preview via fileUrl(key).
  */
 import { ref } from 'vue'
-import { ApiError, uploadImage } from '../api/client'
+import { ApiError, fileUrl, uploadImage } from '../api/client'
 import { useAuthStore } from '../stores/auth'
 
 const model = defineModel<string[]>({ default: () => [] })
-const props = defineProps<{ urls?: string[] }>()
 const auth = useAuthStore()
 const uploading = ref(false)
 const error = ref('')
@@ -43,8 +42,8 @@ function move(index: number, delta: number) {
   model.value = copy
 }
 
-function previewAt(index: number): string | undefined {
-  return props.urls?.[index]
+function previewAt(index: number): string {
+  return fileUrl(model.value[index])
 }
 </script>
 

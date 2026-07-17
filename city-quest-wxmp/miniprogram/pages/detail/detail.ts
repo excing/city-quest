@@ -4,6 +4,7 @@
  */
 
 import { getAppContext } from '../../app-context'
+import { fileUrl } from '../../core/config/env'
 import { messageFromUnknown, isHttpError } from '../../core/error/messages'
 import { switchTab } from '../../core/navigation/nav'
 import type { EncyclopediaDetail } from '../../features/encyclopedia/public'
@@ -41,14 +42,13 @@ function toVm(
   detail: EncyclopediaDetail,
   typeMap: Record<string, { key: string; name: string; color: string }>,
 ): DetailVm {
-  const images =
+  const keys =
     detail.images?.length > 0
       ? detail.images
-      : detail.imageUrls?.length
-        ? detail.imageUrls
-        : detail.coverUrl
-          ? [detail.coverUrl]
-          : []
+      : detail.coverKey
+        ? [detail.coverKey]
+        : []
+  const images = keys.map((key) => fileUrl(key)).filter(Boolean)
   const address = detail.address?.trim() || ''
   const businessHours = detail.businessHours?.trim() || ''
   const avgPrice = detail.avgPrice?.trim() || ''

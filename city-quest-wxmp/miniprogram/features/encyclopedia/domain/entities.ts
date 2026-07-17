@@ -1,6 +1,7 @@
 /**
  * Encyclopedia domain entities (client-side).
  * Callers: encyclopedia application/infrastructure. No wx.
+ * Image fields are server-issued media keys; resolve with fileUrl() for display.
  */
 
 export interface EncyclopediaType {
@@ -24,9 +25,9 @@ export interface EncyclopediaDetail extends EncyclopediaListItem {
   avgPrice?: string | null
   phone?: string | null
   tags: string[]
+  /** Ordered media keys; [0] is cover. */
   images: string[]
-  imageUrls?: string[]
-  coverUrl?: string | null
+  coverKey?: string | null
   status?: string
   isFavorited?: boolean
 }
@@ -35,7 +36,8 @@ export interface BrowseHistoryItem {
   id: string
   name: string
   typeKey: string
-  coverUrl?: string | null
+  /** Media key for list cover; resolve with fileUrl(). */
+  coverKey?: string | null
   intro?: string
   viewedAt: string
 }
@@ -44,7 +46,7 @@ export interface FavoriteListItem {
   encyclopediaId: string
   name: string
   typeKey: string
-  coverUrl?: string | null
+  coverKey?: string | null
   intro?: string
   status: string
   favoritedAt: string

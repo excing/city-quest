@@ -2,11 +2,12 @@
  * Local browse history list (Phase 3).
  * Callers: WeChat router (package-account); entry from pages/mine.
  * API: getAppContext().listBrowseHistory / clearBrowseHistory.
- * Schema: BrowseHistoryItem { id, name, typeKey, coverUrl?, intro?, viewedAt ISO }.
+ * Schema: BrowseHistoryItem { id, name, typeKey, coverKey?, intro?, viewedAt ISO }.
  * User instruction: 按该文档, 选择合适的agents/skills, 实现阶段3.
  */
 
 import { getAppContext } from '../../../app-context'
+import { fileUrl } from '../../../core/config/env'
 import { navigateTo, switchTab } from '../../../core/navigation/nav'
 import type { BrowseHistoryItem } from '../../../features/encyclopedia/public'
 import {
@@ -41,7 +42,7 @@ function formatViewedAt(iso: string): string {
 function toRows(items: BrowseHistoryItem[]): HistoryRow[] {
   const typeMap = buildTypeMap([])
   return items.map((item) => {
-    const coverUrl = item.coverUrl || ''
+    const coverUrl = fileUrl(item.coverKey)
     return {
       id: item.id,
       name: item.name,

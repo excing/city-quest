@@ -72,3 +72,10 @@ export function apiUrl(path: string): string {
 export function assetUrl(path: string): string {
   return apiUrl(path)
 }
+
+/** Resolve encyclopedia media key to the public files API URL. */
+export function fileUrl(key: string | null | undefined): string {
+  if (!key) return ''
+  const path = key.startsWith('/') ? key.slice(1) : key
+  return apiUrl(`/api/v1/files/${path}`)
+}

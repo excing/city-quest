@@ -48,12 +48,19 @@ export interface AdminEncyclopedia {
   avgPrice: string | null
   phone: string | null
   tags: string[]
+  /** Ordered media keys; [0] is cover. */
   images: string[]
-  imageUrls: string[]
-  coverUrl: string | null
+  coverKey: string | null
   status: string
   createdAt: string
   updatedAt: string
+}
+
+/** Resolve encyclopedia media key to the public files API URL. */
+export function fileUrl(key: string | null | undefined): string {
+  if (!key) return ''
+  const path = key.startsWith('/') ? key.slice(1) : key
+  return `${API_BASE}/api/v1/files/${path}`
 }
 
 export type EncyclopediaInput = {
@@ -196,5 +203,5 @@ export async function uploadImage(token: string, file: File) {
     headers: { Authorization: `Bearer ${token}` },
     body: form,
   })
-  return parseJson<{ key: string; url: string }>(res)
+  return parseJson<{ key: string }>(res)
 }

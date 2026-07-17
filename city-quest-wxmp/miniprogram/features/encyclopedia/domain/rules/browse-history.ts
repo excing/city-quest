@@ -10,7 +10,7 @@ export interface UpsertBrowseInput {
   id: string
   name: string
   typeKey: string
-  coverUrl?: string | null
+  coverKey?: string | null
   intro?: string
   viewedAt?: string
 }
@@ -28,7 +28,7 @@ export function upsertBrowseHistory(
     id: input.id,
     name: input.name,
     typeKey: input.typeKey,
-    coverUrl: input.coverUrl ?? null,
+    coverKey: input.coverKey ?? null,
     intro: input.intro,
     viewedAt,
   }
