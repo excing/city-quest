@@ -26,12 +26,6 @@
   </view>
 
   <view class="cq-list">
-    <view class="cq-list-cell" bindtap="goHistory" hover-class="mine-cell--pressed">
-      <view class="cq-list-cell__main">
-        <view class="cq-list-cell__title">浏览记录</view>
-      </view>
-      <text class="cq-list-cell__chevron">›</text>
-    </view>
     <view
       class="cq-list-cell"
       wx:if="{{loggedIn}}"
@@ -43,12 +37,18 @@
       </view>
       <text class="cq-list-cell__chevron">›</text>
     </view>
+    <view class="cq-list-cell" bindtap="goHistory" hover-class="mine-cell--pressed">
+      <view class="cq-list-cell__main">
+        <view class="cq-list-cell__title">浏览记录</view>
+      </view>
+      <text class="cq-list-cell__chevron">›</text>
+    </view>
   </view>
 
   <view class="cq-list">
-    <view class="cq-list-cell" bindtap="goAbout" hover-class="mine-cell--pressed">
+    <view class="cq-list-cell" bindtap="goPrivacy" hover-class="mine-cell--pressed">
       <view class="cq-list-cell__main">
-        <view class="cq-list-cell__title">关于</view>
+        <view class="cq-list-cell__title">隐私政策</view>
       </view>
       <text class="cq-list-cell__chevron">›</text>
     </view>
@@ -58,9 +58,9 @@
       </view>
       <text class="cq-list-cell__chevron">›</text>
     </view>
-    <view class="cq-list-cell" bindtap="goPrivacy" hover-class="mine-cell--pressed">
+    <view class="cq-list-cell" bindtap="goAbout" hover-class="mine-cell--pressed">
       <view class="cq-list-cell__main">
-        <view class="cq-list-cell__title">隐私政策</view>
+        <view class="cq-list-cell__title">关于</view>
       </view>
       <text class="cq-list-cell__chevron">›</text>
     </view>
