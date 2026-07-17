@@ -1,14 +1,10 @@
 /**
  * Login use case: wx.login code → server → session.
+ * Does not collect avatar or nickname (WeChat privacy).
  */
 
 import type { SessionPort, SessionUser } from '../../../core/session/types'
 import type { AuthRepository } from '../domain/ports'
-
-export interface LoginInput {
-  nickname?: string
-  avatarUrl?: string
-}
 
 export function createLogin(deps: {
   authRepo: AuthRepository
@@ -31,13 +27,9 @@ export function createLogin(deps: {
         })
       }))
 
-  return async function login(input: LoginInput = {}): Promise<SessionUser> {
+  return async function login(): Promise<SessionUser> {
     const code = await getCode()
-    const { token, user } = await deps.authRepo.loginWithWechat({
-      code,
-      nickname: input.nickname,
-      avatarUrl: input.avatarUrl,
-    })
+    const { token, user } = await deps.authRepo.loginWithWechat({ code })
     deps.session.setSession(token, user)
     return user
   }

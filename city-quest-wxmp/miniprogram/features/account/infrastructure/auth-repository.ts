@@ -24,8 +24,6 @@ export function createAuthRepository(http: HttpClient): AuthRepository {
         method: 'POST',
         data: {
           code: input.code,
-          nickname: input.nickname,
-          avatarUrl: input.avatarUrl,
         },
       })
       return {

@@ -29,8 +29,9 @@ Page({
     })
   },
 
-  goLogin() {
-    navigateTo(AccountRoutes.login)
+  async goLogin() {
+    await getAppContext().ensureAuthenticated()
+    this.refreshSession()
   },
 
   goHistory() {

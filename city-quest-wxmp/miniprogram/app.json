@@ -9,7 +9,6 @@
       "root": "package-account",
       "name": "account",
       "pages": [
-        "pages/login/login",
         "pages/history/history",
         "pages/favorites/favorites",
         "pages/about/about",

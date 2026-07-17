@@ -151,10 +151,7 @@ Page({
     if (!detail || this.data.favoriting) return
 
     const ctx = getAppContext()
-    const ok = await ctx.ensureAuthenticated({
-      currentPath: EncyclopediaRoutes.detail,
-      query: { id: detail.id },
-    })
+    const ok = await ctx.ensureAuthenticated()
     if (!ok) return
 
     this.setData({ favoriting: true })

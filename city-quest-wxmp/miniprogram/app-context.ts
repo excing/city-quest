@@ -58,6 +58,7 @@ export function createAppContext(): AppContext {
   const favoriteRepo = createFavoriteRepository(http)
   const browseRepo = createBrowseHistoryRepository(kv)
   const authRepo = createAuthRepository(http)
+  const login = createLogin({ authRepo, session })
 
   let encyclopediaTypes: EncyclopediaType[] = []
 
@@ -72,8 +73,8 @@ export function createAppContext(): AppContext {
     removeFavorite: createRemoveFavorite(favoriteRepo),
     listBrowseHistory: () => browseRepo.list(),
     clearBrowseHistory: () => browseRepo.clear(),
-    ensureAuthenticated: createEnsureAuthenticated({ session }),
-    login: createLogin({ authRepo, session }),
+    ensureAuthenticated: createEnsureAuthenticated({ session, login }),
+    login,
     logout: createLogout(session),
     getEncyclopediaTypes: () => encyclopediaTypes.map((t) => ({ ...t })),
     setEncyclopediaTypes: (types) => {

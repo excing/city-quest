@@ -67,8 +67,11 @@ Page({
   async bootstrap() {
     const ctx = getAppContext()
     if (!ctx.session.isLoggedIn()) {
-      navigateTo(AccountRoutes.login)
-      return
+      await ctx.ensureAuthenticated()
+      if (!ctx.session.isLoggedIn()) {
+        switchTab(AccountRoutes.mine)
+        return
+      }
     }
     await this.reload()
   },
