@@ -12,9 +12,7 @@
         "pages/history/history",
         "pages/favorites/favorites",
         "pages/profile/profile",
-        "pages/about/about",
-        "pages/agreement/agreement",
-        "pages/privacy/privacy"
+        "pages/about/about"
       ]
     }
   ],

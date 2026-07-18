@@ -46,18 +46,6 @@
   </view>
 
   <view class="cq-list">
-    <view class="cq-list-cell" bindtap="goPrivacy" hover-class="mine-cell--pressed">
-      <view class="cq-list-cell__main">
-        <view class="cq-list-cell__title">隐私政策</view>
-      </view>
-      <text class="cq-list-cell__chevron">›</text>
-    </view>
-    <view class="cq-list-cell" bindtap="goAgreement" hover-class="mine-cell--pressed">
-      <view class="cq-list-cell__main">
-        <view class="cq-list-cell__title">用户协议</view>
-      </view>
-      <text class="cq-list-cell__chevron">›</text>
-    </view>
     <view class="cq-list-cell" bindtap="goAbout" hover-class="mine-cell--pressed">
       <view class="cq-list-cell__main">
         <view class="cq-list-cell__title">关于</view>
