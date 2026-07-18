@@ -47,6 +47,7 @@ npm test
 ## 说明
 
 - 地图 marker：按类型色 **Canvas 动态画圆点**（`features/encyclopedia/presentation/marker-icon-*`），缓存到用户目录；仅保留 `assets/markers/default.png` 作失败回退。`<map>` 不支持 SVG `iconPath`。右侧常显名称由 `marker-label-style` 生成微信 `label`（透明底）。
+- 首页地图：`show-location=true` 显示用户位置；`app.json` 声明 `permission.scope.userLocation` + `requiredPrivateInfos: ["getLocation"]`。
 - 首页加载：仓储 TTL 缓存（列表 60s / 类型 1h）+ 首访一次 fit 视野 + 再 `onShow` soft refresh；图标两阶段渲染（先 fallback/缓存 path，再 `ensureAll` patch）。
 - 设置：`package-account/pages/settings`；「显示地图 POI」本地持久化（`cq/v1/map-show-poi`，默认关），地图页 `enable-poi` 读取；「关于」在设置内。协议/隐私走微信平台，无本地页。
 - 完整交互与视觉以父仓 `docs/` 中 PRD / UIUX / 架构文档为准。

@@ -53,5 +53,10 @@
   "style": "v2",
   "componentFramework": "glass-easel",
   "lazyCodeLoading": "requiredComponents",
-  "requiredPrivateInfos": []
+  "permission": {
+    "scope.userLocation": {
+      "desc": "用于在地图上显示你的当前位置"
+    }
+  },
+  "requiredPrivateInfos": ["getLocation"]
 }

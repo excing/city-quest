@@ -339,6 +339,7 @@ TabBar
 |----|------|
 | 数据 | 一次拉全量 published |
 | 视野 | `include-points`；无点时大理中心 + 默认 scale |
+| 用户位置 | 地图显示当前位置（`show-location`）；需授权定位 |
 | Marker | 圆点；填充类型 `color`；白边；选中可放大 ~1.2 或加粗描边（实现：Canvas 动态生成 PNG 作 `iconPath`，非按类型静态图） |
 | 点位签 | 距 Tab / 安全底 ≥ 16px；左右 margin 16；含类型名 |
 | 二次点击同点 | 保持签；点地图空白 → 收起签并取消选中 |

@@ -7,7 +7,7 @@
     scale="{{scale}}"
     markers="{{markers}}"
     include-points="{{includePoints}}"
-    show-location="{{false}}"
+    show-location="{{true}}"
     enable-3D="{{false}}"
     show-compass="{{false}}"
     enable-overlooking="{{false}}"
