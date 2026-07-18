@@ -55,19 +55,17 @@
   color: var(--color-ink-muted);
   font-size: 36rpx;
   line-height: 1;
-  margin-right: 8rpx;
 }
 
-.mine-logout {
-  margin: 0;
-  background: var(--color-fill);
-  color: var(--color-ink-secondary);
-  font-size: 24rpx;
-  line-height: 56rpx;
-  height: 56rpx;
-  padding: 0 20rpx;
-  border-radius: var(--radius-pill);
-  flex-shrink: 0;
+.mine-logout-cell {
+  justify-content: center;
+}
+
+.mine-logout-cell__title {
+  width: 100%;
+  text-align: center;
+  color: var(--color-danger, #e54d42);
+  font-weight: 500;
 }
 
 .mine-guest__title {

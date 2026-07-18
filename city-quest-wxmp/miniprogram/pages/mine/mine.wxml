@@ -14,7 +14,6 @@
           <view class="mine-user__hint">点击编辑资料</view>
         </view>
         <text class="mine-user__chevron">›</text>
-        <button class="mine-logout" size="mini" catchtap="onLogout">退出</button>
       </view>
     </block>
     <block wx:else>
@@ -64,6 +63,14 @@
         <view class="cq-list-cell__title">关于</view>
       </view>
       <text class="cq-list-cell__chevron">›</text>
+    </view>
+  </view>
+
+  <view class="cq-list" wx:if="{{loggedIn}}">
+    <view class="cq-list-cell mine-logout-cell" bindtap="onLogout" hover-class="mine-cell--pressed">
+      <view class="cq-list-cell__main">
+        <view class="cq-list-cell__title mine-logout-cell__title">退出登录</view>
+      </view>
     </view>
   </view>
 </view>
