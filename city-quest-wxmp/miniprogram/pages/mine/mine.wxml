@@ -1,7 +1,7 @@
 <view class="mine-page cq-page cq-safe-bottom">
   <view class="mine-card cq-card">
     <block wx:if="{{loggedIn}}">
-      <view class="mine-user">
+      <view class="mine-user" bindtap="goProfile">
         <image
           class="mine-avatar"
           wx:if="{{avatarUrl}}"
@@ -11,9 +11,10 @@
         <view class="mine-avatar mine-avatar--placeholder" wx:else>探</view>
         <view class="mine-user__info">
           <view class="mine-user__name">{{nickname}}</view>
-          <view class="mine-user__hint">已登录</view>
+          <view class="mine-user__hint">点击编辑资料</view>
         </view>
-        <button class="mine-logout" size="mini" bindtap="onLogout">退出</button>
+        <text class="mine-user__chevron">›</text>
+        <button class="mine-logout" size="mini" catchtap="onLogout">退出</button>
       </view>
     </block>
     <block wx:else>

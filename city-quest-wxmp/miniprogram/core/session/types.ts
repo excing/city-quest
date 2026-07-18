@@ -6,7 +6,9 @@
 export interface SessionUser {
   id: string
   nickname?: string | null
+  /** R2 object key; resolve display with fileUrl(). */
   avatarUrl?: string | null
+  phone?: string | null
 }
 
 export interface SessionSnapshot {

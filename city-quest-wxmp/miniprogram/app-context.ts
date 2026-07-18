@@ -22,8 +22,11 @@ import {
 import {
   createAuthRepository,
   createEnsureAuthenticated,
+  createLoadProfile,
   createLogin,
   createLogout,
+  createProfileRepository,
+  createUpdateProfile,
 } from './features/account/public'
 
 export interface AppContext {
@@ -40,6 +43,8 @@ export interface AppContext {
   ensureAuthenticated: ReturnType<typeof createEnsureAuthenticated>
   login: ReturnType<typeof createLogin>
   logout: ReturnType<typeof createLogout>
+  loadProfile: ReturnType<typeof createLoadProfile>
+  updateProfile: ReturnType<typeof createUpdateProfile>
   /** Shared remote types for map + detail (populated by loadMapPoints). */
   getEncyclopediaTypes: () => EncyclopediaType[]
   setEncyclopediaTypes: (types: EncyclopediaType[]) => void
@@ -58,6 +63,7 @@ export function createAppContext(): AppContext {
   const favoriteRepo = createFavoriteRepository(http)
   const browseRepo = createBrowseHistoryRepository(kv)
   const authRepo = createAuthRepository(http)
+  const profileRepo = createProfileRepository(http, session)
   const login = createLogin({ authRepo, session })
 
   let encyclopediaTypes: EncyclopediaType[] = []
@@ -76,6 +82,8 @@ export function createAppContext(): AppContext {
     ensureAuthenticated: createEnsureAuthenticated({ session, login }),
     login,
     logout: createLogout(session),
+    loadProfile: createLoadProfile({ profileRepo, session }),
+    updateProfile: createUpdateProfile({ profileRepo, session }),
     getEncyclopediaTypes: () => encyclopediaTypes.map((t) => ({ ...t })),
     setEncyclopediaTypes: (types) => {
       encyclopediaTypes = types.map((t) => ({ ...t }))

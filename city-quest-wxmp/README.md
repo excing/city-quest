@@ -11,12 +11,19 @@ miniprogram/
   core/          内核端口（http / session / storage / state / map / …）
   shared/        与业务无关的工具
   features/      业务模块（encyclopedia、account）
-  pages/         薄页面入口（主包）
-  package-account/  账户与低频页分包
+  pages/         薄页面入口（主包 map / mine / detail）
+  package-account/  分包：history / favorites / profile / 合规页
   app-context.ts composition root
 ```
 
 扩展新业务：新建 `features/<name>/` + `public.ts` + 注册路由；不要改 core 公共语义。
+
+### 账户 / 资料
+
+- 登录：`ensureAuthenticated` → 页内授权弹窗 → `wx.login` code only  
+- 资料：`package-account/pages/profile`；`loadProfile` / `updateProfile`  
+- 头像：`chooseAvatar` → `POST /api/v1/me/avatar` → `POST /api/v1/me`；展示 `fileUrl(key)`  
+- 手机号：选填，客户端/服务端仅 `^1\d{10}$` 格式校验  
 
 ## 开发
 

@@ -6,5 +6,15 @@
 export { AccountRoutes } from './routes'
 export { createEnsureAuthenticated } from './application/ensure-authenticated'
 export { createLogin, createLogout } from './application/login'
+export {
+  createLoadProfile,
+  createUpdateProfile,
+  isValidPhone,
+} from './application/update-profile'
 export { createAuthRepository } from './infrastructure/auth-repository'
-export type { AuthRepository } from './domain/ports'
+export { createProfileRepository } from './infrastructure/profile-repository'
+export type {
+  AuthRepository,
+  ProfileRepository,
+  ProfileUpdateInput,
+} from './domain/ports'

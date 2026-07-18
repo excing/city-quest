@@ -10,3 +10,15 @@ export interface AuthRepository {
     code: string
   }): Promise<{ token: string; user: SessionUser }>
 }
+
+export interface ProfileUpdateInput {
+  nickname?: string
+  phone?: string | null
+  avatarKey?: string | null
+}
+
+export interface ProfileRepository {
+  getProfile(): Promise<SessionUser>
+  updateProfile(input: ProfileUpdateInput): Promise<SessionUser>
+  uploadAvatar(localPath: string): Promise<{ key: string }>
+}

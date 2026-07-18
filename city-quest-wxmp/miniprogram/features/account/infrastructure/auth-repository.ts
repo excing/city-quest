@@ -13,6 +13,16 @@ interface LoginResponse {
     id: string
     nickname?: string | null
     avatarUrl?: string | null
+    phone?: string | null
+  }
+}
+
+function mapUser(user: LoginResponse['user']): SessionUser {
+  return {
+    id: user.id,
+    nickname: user.nickname,
+    avatarUrl: user.avatarUrl,
+    phone: user.phone,
   }
 }
 
@@ -28,11 +38,7 @@ export function createAuthRepository(http: HttpClient): AuthRepository {
       })
       return {
         token: data.token,
-        user: {
-          id: data.user.id,
-          nickname: data.user.nickname,
-          avatarUrl: data.user.avatarUrl,
-        },
+        user: mapUser(data.user),
       }
     },
   }

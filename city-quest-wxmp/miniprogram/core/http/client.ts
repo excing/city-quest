@@ -9,7 +9,7 @@ import type { SessionPort } from '../session/types'
 import { HttpError } from './errors'
 import type { ApiResponse } from './types'
 
-export type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE'
+export type HttpMethod = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE'
 
 export interface RequestOptions {
   method?: HttpMethod
@@ -48,7 +48,8 @@ export function createHttpClient(deps: CreateHttpClientDeps): HttpClient {
     return new Promise<T>((resolve, reject) => {
       wx.request({
         url,
-        method,
+        // WeChat typings omit PATCH; runtime supports it.
+        method: method as WechatMiniprogram.RequestOption['method'],
         data: options.data as
           | WechatMiniprogram.IAnyObject
           | string

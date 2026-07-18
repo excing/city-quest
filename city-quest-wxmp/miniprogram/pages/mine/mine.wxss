@@ -51,6 +51,13 @@
   color: var(--color-ink-muted);
 }
 
+.mine-user__chevron {
+  color: var(--color-ink-muted);
+  font-size: 36rpx;
+  line-height: 1;
+  margin-right: 8rpx;
+}
+
 .mine-logout {
   margin: 0;
   background: var(--color-fill);
@@ -60,6 +67,7 @@
   height: 56rpx;
   padding: 0 20rpx;
   border-radius: var(--radius-pill);
+  flex-shrink: 0;
 }
 
 .mine-guest__title {
