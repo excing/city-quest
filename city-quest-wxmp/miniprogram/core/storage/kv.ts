@@ -15,16 +15,14 @@ export function createWxKvStorage(): KvStorage {
       try {
         const raw = wx.getStorageSync(key)
         if (raw === '' || raw === undefined || raw === null) return null
-        if (typeof raw === 'string') {
-          return JSON.parse(raw) as T
-        }
-        return raw as T
+        if (typeof raw !== 'string') return null
+        return JSON.parse(raw) as T
       } catch {
         return null
       }
     },
     setJson(key: string, value: unknown): void {
-      wx.setStorageSync(key, value)
+      wx.setStorageSync(key, JSON.stringify(value))
     },
     remove(key: string): void {
       try {
