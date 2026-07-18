@@ -12,7 +12,7 @@ miniprogram/
   shared/        与业务无关的工具
   features/      业务模块（encyclopedia、account）
   pages/         薄页面入口（主包 map / mine / detail）
-  package-account/  分包：history / favorites / profile / 合规页
+  package-account/  分包：history / favorites / profile / settings / about
   app-context.ts composition root
 ```
 
@@ -48,6 +48,7 @@ npm test
 
 - 地图 marker：按类型色 **Canvas 动态画圆点**（`features/encyclopedia/presentation/marker-icon-*`），缓存到用户目录；仅保留 `assets/markers/default.png` 作失败回退。`<map>` 不支持 SVG `iconPath`。右侧常显名称由 `marker-label-style` 生成微信 `label`（透明底）。
 - 首页加载：仓储 TTL 缓存（列表 60s / 类型 1h）+ 首访一次 fit 视野 + 再 `onShow` soft refresh；图标两阶段渲染（先 fallback/缓存 path，再 `ensureAll` patch）。
+- 设置：`package-account/pages/settings`；「显示地图 POI」本地持久化（`cq/v1/map-show-poi`，默认关），地图页 `enable-poi` 读取；「关于」在设置内。协议/隐私走微信平台，无本地页。
 - 完整交互与视觉以父仓 `docs/` 中 PRD / UIUX / 架构文档为准。
 - Tab 图标未配置时可在开发者工具中暂用文字 Tab（已配置 text）。
 - 切勿将 `WECHAT_SECRET` / `JWT_SECRET` 写入小程序。

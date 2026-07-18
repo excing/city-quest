@@ -14,7 +14,7 @@
     bindmarkertap="onMarkerTap"
     bindlabeltap="onMarkerTap"
     bindtap="onMapTap"
-    enable-poi="{{false}}"
+    enable-poi="{{enablePoi}}"
   />
 
   <view class="map-banner map-banner--loading" wx:if="{{loading}}">

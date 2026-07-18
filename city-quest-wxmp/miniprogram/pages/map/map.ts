@@ -61,6 +61,7 @@ Page({
     loading: true,
     error: '',
     empty: false,
+    enablePoi: false,
   },
 
   _items: [] as EncyclopediaListItem[],
@@ -78,6 +79,9 @@ Page({
   _ignoreMapTapUntil: 0 as number,
 
   onShow() {
+    this.setData({
+      enablePoi: getAppContext().getMapShowPoi(),
+    })
     if (this._hasLoadedOnce) {
       void this.reload({ soft: true })
     } else {

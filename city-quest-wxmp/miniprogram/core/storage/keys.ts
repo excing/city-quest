@@ -9,4 +9,6 @@ export const StorageKeys = {
   token: `${STORAGE_NS}/token`,
   user: `${STORAGE_NS}/user`,
   browseHistory: `${STORAGE_NS}/browse-history`,
+  /** Whether WeChat map system POI labels are shown. */
+  mapShowPoi: `${STORAGE_NS}/map-show-poi`,
 } as const

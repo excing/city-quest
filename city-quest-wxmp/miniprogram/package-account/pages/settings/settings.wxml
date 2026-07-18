@@ -1,5 +1,20 @@
 <view class="settings-page cq-page cq-safe-bottom">
   <view class="cq-list">
+    <view class="cq-list-cell settings-switch-cell">
+      <view class="cq-list-cell__main">
+        <view class="cq-list-cell__title">显示地图 POI</view>
+        <view class="cq-list-cell__sub">开启后显示系统地点标注</view>
+      </view>
+      <switch
+        class="settings-switch"
+        checked="{{mapShowPoi}}"
+        color="#2B4C7E"
+        bindchange="onMapShowPoiChange"
+      />
+    </view>
+  </view>
+
+  <view class="cq-list">
     <view class="cq-list-cell" bindtap="goAbout" hover-class="settings-cell--pressed">
       <view class="cq-list-cell__main">
         <view class="cq-list-cell__title">关于</view>

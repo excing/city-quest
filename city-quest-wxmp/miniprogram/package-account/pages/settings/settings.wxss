@@ -2,6 +2,15 @@
   padding: 32rpx 0 48rpx;
 }
 
+.settings-switch-cell {
+  gap: 16rpx;
+}
+
+.settings-switch {
+  margin-left: 16rpx;
+  flex-shrink: 0;
+}
+
 .settings-cell--pressed {
   background: var(--color-fill);
 }

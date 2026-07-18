@@ -4,6 +4,7 @@
  */
 
 import { createHttpClient } from './core/http/client'
+import { createMapPreferences } from './core/map/preferences'
 import { createSession } from './core/session/session'
 import type { SessionPort } from './core/session/types'
 import { createWxKvStorage } from './core/storage/kv'
@@ -48,6 +49,9 @@ export interface AppContext {
   /** Shared remote types for map + detail (populated by loadMapPoints). */
   getEncyclopediaTypes: () => EncyclopediaType[]
   setEncyclopediaTypes: (types: EncyclopediaType[]) => void
+  /** Whether WeChat map system POI labels are shown. */
+  getMapShowPoi: () => boolean
+  setMapShowPoi: (show: boolean) => void
 }
 
 let ctx: AppContext | null = null
@@ -56,6 +60,7 @@ export function createAppContext(): AppContext {
   const kv = createWxKvStorage()
   const session = createSession({ kv })
   session.hydrate()
+  const mapPreferences = createMapPreferences(kv)
 
   const http = createHttpClient({ session })
   const remoteRepo = createEncyclopediaRepository(http)
@@ -88,6 +93,8 @@ export function createAppContext(): AppContext {
     setEncyclopediaTypes: (types) => {
       encyclopediaTypes = types.map((t) => ({ ...t }))
     },
+    getMapShowPoi: () => mapPreferences.getShowPoi(),
+    setMapShowPoi: (show) => mapPreferences.setShowPoi(show),
   }
 }
 
