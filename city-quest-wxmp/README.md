@@ -25,6 +25,12 @@ miniprogram/
 - 头像：`chooseAvatar` → `POST /api/v1/me/avatar` → `POST /api/v1/me`；展示 `fileUrl(key)`  
 - 手机号：选填，客户端/服务端仅 `^1\d{10}$` 格式校验  
 
+### HTTP 方法约束
+
+- `core/http` 仅允许 `GET` / `POST` / `PUT` / `DELETE`，**不使用 `PATCH`**。  
+- 原因：微信 `wx.request` 官方类型不含 `PATCH`；小程序写操作统一 POST，避免类型断言与兼容性坑。  
+- 用户资料更新：`POST /api/v1/me`（服务端与此对齐）。
+
 ## 开发
 
 1. 用微信开发者工具打开本目录（`project.config.json` 的 `miniprogramRoot` 为 `miniprogram/`）。
