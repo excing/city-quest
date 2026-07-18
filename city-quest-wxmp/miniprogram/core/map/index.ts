@@ -3,4 +3,4 @@
  */
 
 export type { MapMarkerVm, MapPoint, MapViewport } from './types'
-export { viewportFromMarkers } from './viewport'
+export { viewportFromMarkers, viewportForPoint } from './viewport'

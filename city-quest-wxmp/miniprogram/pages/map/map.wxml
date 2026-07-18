@@ -42,8 +42,8 @@
       <view class="preview-card__body">
         <view class="preview-card__head">
           <view class="preview-card__name">{{preview.name}}</view>
-          <view class="preview-card__go">
-            <text class="preview-card__go-label">详情</text>
+          <view class="preview-card__go" catchtap="onLocateHere">
+            <text class="preview-card__go-label">定位到这里</text>
             <text class="preview-card__go-chevron">›</text>
           </view>
         </view>

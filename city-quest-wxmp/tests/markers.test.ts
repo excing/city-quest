@@ -1,6 +1,10 @@
 import { describe, expect, it } from 'vitest'
+import { LOCATE_MAP_SCALE } from '../miniprogram/core/config/constants'
+import {
+  viewportForPoint,
+  viewportFromMarkers,
+} from '../miniprogram/core/map/viewport'
 import { toMapMarkers } from '../miniprogram/features/encyclopedia/domain/rules/markers'
-import { viewportFromMarkers } from '../miniprogram/core/map/viewport'
 
 describe('toMapMarkers + viewport', () => {
   it('maps list items to marker vms', () => {
@@ -45,5 +49,18 @@ describe('toMapMarkers + viewport', () => {
     ])
     const vp = viewportFromMarkers(markers)
     expect(vp.includePoints).toEqual([{ lng: 1, lat: 2 }])
+  })
+
+  it('viewportForPoint centers and zooms to a single encyclopedia location', () => {
+    const vp = viewportForPoint({ lng: 100.23, lat: 25.67 })
+    expect(vp).toEqual({
+      center: { lng: 100.23, lat: 25.67 },
+      scale: LOCATE_MAP_SCALE,
+    })
+  })
+
+  it('viewportForPoint accepts a custom scale', () => {
+    const vp = viewportForPoint({ lng: 1, lat: 2 }, 14)
+    expect(vp.scale).toBe(14)
   })
 })

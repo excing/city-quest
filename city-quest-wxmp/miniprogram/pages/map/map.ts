@@ -14,6 +14,7 @@ import { getAppContext } from '../../app-context'
 import { DEFAULT_MAP_CENTER, DEFAULT_MAP_SCALE } from '../../core/config/constants'
 import { messageFromUnknown } from '../../core/error/messages'
 import type { MapMarkerVm } from '../../core/map/types'
+import { viewportForPoint } from '../../core/map/viewport'
 import { navigateTo } from '../../core/navigation/nav'
 import type {
   EncyclopediaListItem,
@@ -292,6 +293,29 @@ Page({
     const id = this.data.preview?.id
     if (!id) return
     navigateTo(detailUrl(id))
+  },
+
+  /**
+   * "定位到这里": center map on the selected encyclopedia and zoom in.
+   * Clears includePoints so a previous multi-point fit does not fight the center.
+   */
+  onLocateHere() {
+    const id = this.data.preview?.id
+    if (!id) return
+    const vm = this._vmById[id]
+    if (!vm) return
+
+    const viewport = viewportForPoint({ lng: vm.lng, lat: vm.lat })
+    const center = viewport.center
+    if (!center || viewport.scale == null) return
+
+    this.setData({
+      longitude: center.lng,
+      latitude: center.lat,
+      scale: viewport.scale,
+      // Clear multi-point fit so center/scale take effect after first load.
+      includePoints: [],
+    })
   },
 
   onRetry() {

@@ -17,5 +17,8 @@ export const DEFAULT_MAP_CENTER = {
 
 export const DEFAULT_MAP_SCALE = 12
 
+/** Zoom level when centering the map on a single encyclopedia point. */
+export const LOCATE_MAP_SCALE = 16
+
 /** Storage key namespace version. */
 export const STORAGE_NS = 'cq/v1'
