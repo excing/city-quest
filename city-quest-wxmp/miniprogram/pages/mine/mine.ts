@@ -1,5 +1,5 @@
 /**
- * Mine tab — session, history/favorites entries, about.
+ * Mine tab — session, history/favorites entries, settings.
  * Callers: WeChat tabBar.
  */
 
@@ -63,8 +63,8 @@ Page({
     navigateTo(EncyclopediaRoutes.favorites)
   },
 
-  goAbout() {
-    navigateTo(AccountRoutes.about)
+  goSettings() {
+    navigateTo(AccountRoutes.settings)
   },
 
   onLogout() {

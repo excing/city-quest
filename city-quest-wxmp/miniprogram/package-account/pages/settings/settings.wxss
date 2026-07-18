@@ -1,0 +1,7 @@
+.settings-page {
+  padding: 32rpx 0 48rpx;
+}
+
+.settings-cell--pressed {
+  background: var(--color-fill);
+}

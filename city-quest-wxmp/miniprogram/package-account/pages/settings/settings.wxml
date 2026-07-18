@@ -1,0 +1,10 @@
+<view class="settings-page cq-page cq-safe-bottom">
+  <view class="cq-list">
+    <view class="cq-list-cell" bindtap="goAbout" hover-class="settings-cell--pressed">
+      <view class="cq-list-cell__main">
+        <view class="cq-list-cell__title">关于</view>
+      </view>
+      <text class="cq-list-cell__chevron">›</text>
+    </view>
+  </view>
+</view>

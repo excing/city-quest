@@ -46,9 +46,9 @@
   </view>
 
   <view class="cq-list">
-    <view class="cq-list-cell" bindtap="goAbout" hover-class="mine-cell--pressed">
+    <view class="cq-list-cell" bindtap="goSettings" hover-class="mine-cell--pressed">
       <view class="cq-list-cell__main">
-        <view class="cq-list-cell__title">关于</view>
+        <view class="cq-list-cell__title">设置</view>
       </view>
       <text class="cq-list-cell__chevron">›</text>
     </view>

@@ -12,6 +12,7 @@
         "pages/history/history",
         "pages/favorites/favorites",
         "pages/profile/profile",
+        "pages/settings/settings",
         "pages/about/about"
       ]
     }
