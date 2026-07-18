@@ -39,19 +39,6 @@
   background: var(--color-fill);
 }
 
-.history-cover {
-  width: 96rpx;
-  height: 96rpx;
-  border-radius: var(--radius-sm);
-  background: var(--color-fill);
-  flex-shrink: 0;
-  margin-right: 20rpx;
-}
-
-.history-cover--empty {
-  background: var(--color-fill);
-}
-
 .history-main {
   flex: 1;
   min-width: 0;

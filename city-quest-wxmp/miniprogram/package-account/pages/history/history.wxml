@@ -18,13 +18,11 @@
       bindtap="onOpen"
       hover-class="history-row--pressed"
     >
-      <image
-        class="history-cover"
-        wx:if="{{item.hasCover}}"
+      <list-cover
         src="{{item.coverUrl}}"
-        mode="aspectFill"
+        name="{{item.name}}"
+        typeColor="{{item.typeColor}}"
       />
-      <view class="history-cover history-cover--empty" wx:else></view>
       <view class="history-main">
         <view class="history-name">{{item.name}}</view>
         <view class="history-sub">

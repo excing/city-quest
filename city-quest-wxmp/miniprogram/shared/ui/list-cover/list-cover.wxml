@@ -1,0 +1,14 @@
+<!-- Callers: history / favorites list rows. Props: src, name, typeColor. -->
+<image
+  class="list-cover"
+  wx:if="{{hasCover}}"
+  src="{{src}}"
+  mode="aspectFill"
+/>
+<view
+  class="list-cover list-cover--placeholder"
+  style="background: {{placeholderBg}}; color: {{tintColor}};"
+  wx:else
+>
+  {{monogram}}
+</view>

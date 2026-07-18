@@ -1,0 +1,19 @@
+/* Callers: list-cover.wxml. Shared list thumbnail + monogram fallback. */
+.list-cover {
+  width: 96rpx;
+  height: 96rpx;
+  border-radius: var(--radius-sm);
+  background: var(--color-fill);
+  flex-shrink: 0;
+  display: block;
+  margin-right: 20rpx;
+}
+
+.list-cover--placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 36rpx;
+  font-weight: 600;
+  line-height: 1;
+}

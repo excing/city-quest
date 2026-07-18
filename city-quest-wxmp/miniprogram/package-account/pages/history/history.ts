@@ -25,7 +25,6 @@ interface HistoryRow {
   typeColor: string
   intro: string
   coverUrl: string
-  hasCover: boolean
   viewedAtLabel: string
 }
 
@@ -41,19 +40,15 @@ function formatViewedAt(iso: string): string {
 
 function toRows(items: BrowseHistoryItem[]): HistoryRow[] {
   const typeMap = buildTypeMap([])
-  return items.map((item) => {
-    const coverUrl = fileUrl(item.coverKey)
-    return {
-      id: item.id,
-      name: item.name,
-      typeName: typeNameOf(item.typeKey, typeMap),
-      typeColor: typeColorOf(item.typeKey, typeMap),
-      intro: item.intro || '',
-      coverUrl,
-      hasCover: Boolean(coverUrl),
-      viewedAtLabel: formatViewedAt(item.viewedAt),
-    }
-  })
+  return items.map((item) => ({
+    id: item.id,
+    name: item.name,
+    typeName: typeNameOf(item.typeKey, typeMap),
+    typeColor: typeColorOf(item.typeKey, typeMap),
+    intro: item.intro || '',
+    coverUrl: fileUrl(item.coverKey),
+    viewedAtLabel: formatViewedAt(item.viewedAt),
+  }))
 }
 
 Page({

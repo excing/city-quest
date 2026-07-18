@@ -26,13 +26,11 @@
         data-unpublished="{{item.isUnpublished}}"
         bindtap="onOpen"
       >
-        <image
-          class="fav-cover"
-          wx:if="{{item.hasCover}}"
+        <list-cover
           src="{{item.coverUrl}}"
-          mode="aspectFill"
+          name="{{item.name}}"
+          typeColor="{{item.typeColor}}"
         />
-        <view class="fav-cover fav-cover--empty" wx:else></view>
         <view class="fav-info">
           <view class="fav-name">
             {{item.name}}

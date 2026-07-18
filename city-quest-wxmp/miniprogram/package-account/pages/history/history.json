@@ -1,1 +1,6 @@
-{ "navigationBarTitleText": "浏览记录", "usingComponents": {} }
+{
+  "navigationBarTitleText": "浏览记录",
+  "usingComponents": {
+    "list-cover": "/shared/ui/list-cover/list-cover"
+  }
+}

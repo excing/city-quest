@@ -41,19 +41,6 @@
   align-items: center;
 }
 
-.fav-cover {
-  width: 96rpx;
-  height: 96rpx;
-  border-radius: var(--radius-sm);
-  background: var(--color-fill);
-  flex-shrink: 0;
-  margin-right: 20rpx;
-}
-
-.fav-cover--empty {
-  background: var(--color-fill);
-}
-
 .fav-info {
   flex: 1;
   min-width: 0;

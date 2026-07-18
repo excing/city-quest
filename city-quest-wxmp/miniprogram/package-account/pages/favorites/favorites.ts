@@ -27,7 +27,6 @@ interface FavoriteRow {
   typeColor: string
   intro: string
   coverUrl: string
-  hasCover: boolean
   isUnpublished: boolean
   removing: boolean
 }
@@ -35,7 +34,6 @@ interface FavoriteRow {
 function toRows(items: FavoriteListItem[]): FavoriteRow[] {
   const typeMap = buildTypeMap([])
   return items.map((item) => {
-    const coverUrl = fileUrl(item.coverKey)
     const status = (item.status || '').toLowerCase()
     const isUnpublished =
       status === 'unpublished' || status === 'offline' || status === 'draft'
@@ -45,8 +43,7 @@ function toRows(items: FavoriteListItem[]): FavoriteRow[] {
       typeName: typeNameOf(item.typeKey, typeMap),
       typeColor: typeColorOf(item.typeKey, typeMap),
       intro: item.intro || '',
-      coverUrl,
-      hasCover: Boolean(coverUrl),
+      coverUrl: fileUrl(item.coverKey),
       isUnpublished,
       removing: false,
     }
