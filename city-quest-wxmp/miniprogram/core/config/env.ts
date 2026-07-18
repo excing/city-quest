@@ -18,8 +18,8 @@ export interface AppEnv {
 const DEVELOP_API_BASE_URL = 'http://192.168.0.107:8787'
 
 /** Set for trial/release builds (custom domain). */
-const TRIAL_API_BASE_URL = 'https://api.example.com'
-const RELEASE_API_BASE_URL = 'https://api.example.com'
+const TRIAL_API_BASE_URL = 'https://cityquest.jiaderen.com'
+const RELEASE_API_BASE_URL = 'https://cityquest.jiaderen.com'
 
 function detectEnvVersion(): MiniProgramEnvVersion {
   try {
